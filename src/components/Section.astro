@@ -3,31 +3,21 @@ interface Props {
   title: string;
   collapsible?: boolean;
   defaultOpen?: boolean;
-  accent?: 'red' | 'yellow' | 'blue' | 'none';
 }
 const {
   title,
   collapsible = false,
   defaultOpen = true,
-  accent = 'none',
 } = Astro.props;
 
 const sectionId = `section-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-
-const accentMap: Record<string, string> = {
-  red:    'var(--color-red)',
-  yellow: 'var(--color-yellow)',
-  blue:   'var(--color-blue)',
-  none:   'var(--color-text-muted)',
-};
-const accentColor = accentMap[accent];
 ---
 
 <section class="section page-section" data-section-id={sectionId}>
 
   <div class="section-header">
     <div class="section-title-row">
-      <h2 class="section-title" style={`color: ${accentColor}`}>{title}</h2>
+      <h2 class="section-title">{title}</h2>
 
       {collapsible && (
         <button

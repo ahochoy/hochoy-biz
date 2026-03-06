@@ -19,7 +19,7 @@ import contentData from '../data/content.json';
   <Hero />
 
   <main class="main-container">
-    <Section title="Call to Action" collapsible={false} accent="red">
+    <Section title="Call to Action" collapsible={false}>
       {ctaData.map((item) => (
         <Card
           icon={item.icon}
@@ -30,7 +30,7 @@ import contentData from '../data/content.json';
       ))}
     </Section>
 
-    <Section title="Connect" collapsible={true} defaultOpen={true} accent="blue">
+    <Section title="Connect" collapsible={true} defaultOpen={true}>
       {connectData.map((item) => (
         <Card
           icon={item.icon}
@@ -41,7 +41,7 @@ import contentData from '../data/content.json';
       ))}
     </Section>
 
-    <Section title="Content" collapsible={true} defaultOpen={true} accent="none">
+    <Section title="Content" collapsible={true} defaultOpen={true}>
       {contentData.map((item) => (
         <Card
           icon={item.icon}
@@ -53,15 +53,15 @@ import contentData from '../data/content.json';
       ))}
     </Section>
 
-    <Section title="Capabilities" collapsible={false} accent="none">
+    <Section title="Capabilities" collapsible={false}>
       <BentoGrid />
     </Section>
 
-    <Section title="Companies I've Worked With" collapsible={false} accent="none">
+    <Section title="Companies I've Worked With" collapsible={false}>
       <CompanyLogos />
     </Section>
 
-    <Section title="Contact" collapsible={false} accent="none">
+    <Section title="Contact" collapsible={false}>
       <Contact />
     </Section>
 
