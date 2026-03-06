@@ -1,0 +1,17 @@
+[
+  {
+    "label": "Schedule a Chat",
+    "href": "https://cal.com/hochoy",
+    "type": "cal"
+  },
+  {
+    "label": "Instagram DM",
+    "href": "https://instagram.com/hochoy",
+    "type": "instagram"
+  },
+  {
+    "label": "Email",
+    "href": "mailto:andrew@hochoy.com",
+    "type": "email"
+  }
+]

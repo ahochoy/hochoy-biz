@@ -1,0 +1,51 @@
+[
+  {
+    "id": "ai-implementation",
+    "title": "AI Implementation",
+    "description": "Helping businesses leverage AI to drive real results",
+    "colSpan": 1,
+    "rowSpan": 2
+  },
+  {
+    "id": "digital-marketing",
+    "title": "Digital Marketing",
+    "description": "Expert-level strategy and execution",
+    "colSpan": 1,
+    "rowSpan": 1
+  },
+  {
+    "id": "documents-presentations",
+    "title": "Documents & Presentations",
+    "description": "Organize and communicate your ideas",
+    "colSpan": 1,
+    "rowSpan": 1
+  },
+  {
+    "id": "software-engineering",
+    "title": "Software Engineering",
+    "description": "Building custom software solutions",
+    "colSpan": 1,
+    "rowSpan": 1
+  },
+  {
+    "id": "project-management",
+    "title": "Project Management",
+    "description": "Organizing and executing complex projects",
+    "colSpan": 1,
+    "rowSpan": 1
+  },
+  {
+    "id": "productivity-operations",
+    "title": "Productivity & Operations",
+    "description": "Optimize your systems for alignment and execution",
+    "colSpan": 1,
+    "rowSpan": 1
+  },
+  {
+    "id": "people-culture",
+    "title": "People & Culture",
+    "description": "Hiring, team management, and culture building",
+    "colSpan": 2,
+    "rowSpan": 1
+  }
+]

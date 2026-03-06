@@ -1,0 +1,30 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <span class="footer-copy">Andrew Hochoy</span>
+  <span>&copy; {year} — Bay Area, CA</span>
+</footer>
+
+<style>
+  .site-footer {
+    padding: var(--space-lg) var(--pad-x);
+    border-top: 1px solid var(--color-rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-copy {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-style: italic;
+    color: var(--color-text);
+  }
+</style>

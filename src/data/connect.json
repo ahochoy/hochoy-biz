@@ -1,0 +1,20 @@
+[
+  {
+    "icon": "📸",
+    "title": "Instagram",
+    "description": "@hochoy",
+    "href": "https://instagram.com/hochoy"
+  },
+  {
+    "icon": "💼",
+    "title": "LinkedIn",
+    "description": "Andrew Hochoy",
+    "href": "https://linkedin.com/in/hochoy"
+  },
+  {
+    "icon": "📰",
+    "title": "Substack",
+    "description": "Newsletter — insights on AI, business & growth",
+    "href": "https://hochoy.substack.com"
+  }
+]

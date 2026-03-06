@@ -1,0 +1,136 @@
+---
+// Drop your speaking photo at: public/images/hero-photo.jpg
+import NavStrip from './NavStrip.astro';
+import PullTab from './PullTab.astro';
+const heroPhotoSrc = "/images/hero-photo.png";
+const heroPhotoFallback = "https://placehold.co/1600x900/111111/333333?text=.";
+---
+
+<header class="hero">
+  <!-- Full-bleed background photo -->
+  <img
+    class="hero-bg"
+    src={heroPhotoSrc}
+    alt=""
+    aria-hidden="true"
+    loading="eager"
+    onerror={`this.onerror=null;this.src='${heroPhotoFallback}'`}
+  />
+
+  <!-- Gradient overlay — heavier at bottom for legibility -->
+  <div class="hero-overlay"></div>
+
+  <!-- Nav strip -->
+  <NavStrip />
+
+  <!-- Main content — bottom-left -->
+  <div class="hero-content">
+    <div class="hero-tags">
+      <span>Educator</span>
+      <span class="tag-sep">·</span>
+      <span>Engineer</span>
+      <span class="tag-sep">·</span>
+      <span>Entrepreneur</span>
+    </div>
+
+    <h1 class="hero-name">Andrew<br />Hochoy.</h1>
+
+    <p class="hero-tagline">
+      Digital advocate and consultant based in the Bay Area.<br />
+      Helping businesses leverage technology to drive real results.
+    </p>
+  </div>
+  <PullTab />
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100svh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    z-index: 0;
+  }
+
+  /* Gradient: subtle dark at top, heavy at bottom so text reads clearly */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.3)  0%,
+        rgba(0, 0, 0, 0.05) 35%,
+        rgba(0, 0, 0, 0.6)  70%,
+        rgba(0, 0, 0, 0.92) 100%
+      );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ── Hero content ─────────────────────────────────────── */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    padding: clamp(1.5rem, 4vw, 3rem) var(--pad-x);
+    /* Accent strip at top of content block */
+  }
+
+  .hero-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
+    flex-wrap: wrap;
+  }
+
+  .hero-tags span {
+    font-family: var(--font-body);
+    font-size: clamp(0.875rem, 1.2vw, 1rem);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .tag-sep {
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  /* The mega-headline */
+  .hero-name {
+    font-family: var(--font-heading);
+    font-size: clamp(4.5rem, 14vw, 12rem);
+    font-weight: 300;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin-bottom: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    max-width: 540px;
+  }
+
+  @media (max-width: 480px) {
+    .hero-name {
+      font-size: clamp(3.5rem, 18vw, 5rem);
+    }
+  }
+</style>

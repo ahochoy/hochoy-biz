@@ -1,0 +1,16 @@
+[
+  {
+    "icon": "✍️",
+    "title": "Latest Post on Substack",
+    "description": "Read the newest issue of my newsletter",
+    "href": "https://hochoy.substack.com",
+    "thumbnailUrl": "https://placehold.co/48x48/66785F/B2C9AD"
+  },
+  {
+    "icon": "🎥",
+    "title": "Latest Video from YouTube",
+    "description": "Watch the most recent upload",
+    "href": "https://youtube.com/@hochoy",
+    "thumbnailUrl": "https://placehold.co/48x48/66785F/B2C9AD"
+  }
+]

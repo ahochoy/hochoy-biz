@@ -1,0 +1,141 @@
+---
+interface Props {
+  icon?: string;
+  title: string;
+  description?: string;
+  href: string;
+  thumbnailUrl?: string;
+}
+const { icon, title, description, href, thumbnailUrl } = Astro.props;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="card"
+>
+  {thumbnailUrl
+    ? <img src={thumbnailUrl} alt="" class="card-thumbnail" loading="lazy" />
+    : icon
+      ? <span class="card-icon" aria-hidden="true">{icon}</span>
+      : null
+  }
+
+  <div class="card-body">
+    <span class="card-title">{title}</span>
+    {description && <span class="card-desc">{description}</span>}
+  </div>
+
+  <span class="card-arrow" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+    border-bottom: 1px solid var(--color-rule);
+    width: 100%;
+    cursor: pointer;
+    transition:
+      background 0.18s ease,
+      padding-left 0.18s ease,
+      padding-right 0.18s ease;
+    position: relative;
+  }
+
+  .card:first-child {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  /* On hover: flood black background edge-to-edge (via negative margin trick) */
+  .card:hover {
+    background: var(--color-text);
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+    margin-left: calc(-1 * var(--space-md));
+    margin-right: calc(-1 * var(--space-md));
+    width: calc(100% + var(--space-md) * 2);
+    border-color: var(--color-text);
+  }
+
+  .card:hover .card-title,
+  .card:hover .card-desc,
+  .card:hover .card-icon,
+  .card:hover .card-arrow {
+    color: var(--color-bg);
+  }
+
+  .card:hover .card-arrow {
+    transform: translateX(4px);
+  }
+
+  .card:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: -2px;
+  }
+
+  .card:active { opacity: 0.8; }
+
+  /* ── Thumbnail ─────────────────────────────────────────── */
+  .card-thumbnail {
+    flex-shrink: 0;
+    width: clamp(3rem, 6vw, 4rem);
+    height: clamp(3rem, 6vw, 4rem);
+    object-fit: cover;
+  }
+
+  /* ── Icon ──────────────────────────────────────────────── */
+  .card-icon {
+    flex-shrink: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1;
+    width: clamp(2.5rem, 4vw, 3rem);
+    text-align: center;
+    color: var(--color-text);
+    transition: color 0.18s ease;
+  }
+
+  /* ── Body ───────────────────────────────────────────────── */
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .card-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-text);
+    transition: color 0.18s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-desc {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.2vw, 1.05rem);
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.18s ease;
+  }
+
+  /* ── Arrow ─────────────────────────────────────────────── */
+  .card-arrow {
+    flex-shrink: 0;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    color: var(--color-text-muted);
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+</style>

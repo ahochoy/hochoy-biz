@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import BentoGrid from '../components/BentoGrid.astro';
+import CompanyLogos from '../components/CompanyLogos.astro';
+import Contact from '../components/Contact.astro';
+
+import ctaData from '../data/cta.json';
+import connectData from '../data/connect.json';
+import contentData from '../data/content.json';
+---
+
+<BaseLayout
+  title="Andrew Hochoy"
+  description="Consultant, speaker, and entrepreneur based in the Bay Area. Helping businesses leverage AI and technology to grow."
+>
+  <Hero />
+
+  <main class="main-container">
+    <Section title="Call to Action" collapsible={false} accent="red">
+      {ctaData.map((item) => (
+        <Card
+          icon={item.icon}
+          title={item.title}
+          description={item.description}
+          href={item.href}
+        />
+      ))}
+    </Section>
+
+    <Section title="Connect" collapsible={true} defaultOpen={true} accent="blue">
+      {connectData.map((item) => (
+        <Card
+          icon={item.icon}
+          title={item.title}
+          description={item.description}
+          href={item.href}
+        />
+      ))}
+    </Section>
+
+    <Section title="Content" collapsible={true} defaultOpen={true} accent="none">
+      {contentData.map((item) => (
+        <Card
+          icon={item.icon}
+          title={item.title}
+          description={item.description}
+          href={item.href}
+          thumbnailUrl={item.thumbnailUrl}
+        />
+      ))}
+    </Section>
+
+    <Section title="Capabilities" collapsible={false} accent="none">
+      <BentoGrid />
+    </Section>
+
+    <Section title="Companies I've Worked With" collapsible={false} accent="none">
+      <CompanyLogos />
+    </Section>
+
+    <Section title="Contact" collapsible={false} accent="none">
+      <Contact />
+    </Section>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    margin: var(--space-xl);
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import capabilities from '../data/capabilities.json';
+---
+
+<div class="bento-grid">
+  {capabilities.map((cap) => (
+    <div
+      class="bento-card"
+      style={`grid-column: span ${cap.colSpan}; grid-row: span ${cap.rowSpan};`}
+      data-id={cap.id}
+    >
+      <div class="bento-inner">
+        <h3 class="bento-title">{cap.title}</h3>
+        {cap.description && <p class="bento-desc">{cap.description}</p>}
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  /* ── Grid shell ─ 1px black rules between cells ─────────── */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: clamp(8rem, 14vw, 12rem);
+    gap: 1px;
+    background: var(--color-rule);
+    border: 1px solid var(--color-rule);
+    overflow: hidden;
+  }
+
+  /* ── Each cell ───────────────────────────────────────────── */
+  .bento-card {
+    background: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.2s ease;
+  }
+
+  .bento-card:hover {
+    background: var(--color-text);
+  }
+
+  .bento-card:hover .bento-title,
+  .bento-card:hover .bento-desc {
+    color: var(--color-bg);
+  }
+
+  /* Content sits at the bottom of each cell */
+  .bento-inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .bento-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .bento-desc {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.2vw, 1.05rem);
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 720px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bento-card {
+      grid-column: span 1 !important;
+      grid-row: span 1 !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+import companies from '../data/companies.json';
+---
+
+<div class="logo-grid">
+  {companies.map((co) => (
+    <div class="logo-item">
+      {co.logoUrl
+        ? <img src={co.logoUrl} alt={co.name} loading="lazy" class="logo-img" />
+        : <span class="logo-text">{co.name}</span>
+      }
+    </div>
+  ))}
+</div>
+
+<style>
+  /* Horizontal flex row — wraps on small screens */
+  .logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+    padding: var(--space-md) 0;
+  }
+
+  .logo-item {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Image logos: grayscale at rest, full color on hover */
+  .logo-img {
+    height: clamp(1.5rem, 3vw, 2rem);
+    width: auto;
+    max-width: 140px;
+    object-fit: contain;
+    opacity: 0.5;
+    filter: grayscale(1);
+    transition: opacity 0.2s ease, filter 0.2s ease;
+  }
+
+  .logo-img:hover {
+    opacity: 1;
+    filter: grayscale(0);
+  }
+
+  /* Text fallback — large Newsreader, faded */
+  .logo-text {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    opacity: 0.25;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+    line-height: 1;
+  }
+
+  .logo-item:hover .logo-text {
+    opacity: 0.7;
+  }
+</style>

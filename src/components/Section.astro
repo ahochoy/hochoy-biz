@@ -1,0 +1,159 @@
+---
+interface Props {
+  title: string;
+  collapsible?: boolean;
+  defaultOpen?: boolean;
+  accent?: 'red' | 'yellow' | 'blue' | 'none';
+}
+const {
+  title,
+  collapsible = false,
+  defaultOpen = true,
+  accent = 'none',
+} = Astro.props;
+
+const sectionId = `section-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
+const accentMap: Record<string, string> = {
+  red:    'var(--color-red)',
+  yellow: 'var(--color-yellow)',
+  blue:   'var(--color-blue)',
+  none:   'var(--color-text-muted)',
+};
+const accentColor = accentMap[accent];
+---
+
+<section class="section page-section" data-section-id={sectionId}>
+
+  <div class="section-header">
+    <div class="section-title-row">
+      <h2 class="section-title" style={`color: ${accentColor}`}>{title}</h2>
+
+      {collapsible && (
+        <button
+          class="section-toggle"
+          aria-expanded={defaultOpen ? "true" : "false"}
+          aria-controls={`${sectionId}-body`}
+          data-toggle-target={sectionId}
+          aria-label={`Toggle ${title} section`}
+        >
+          <span class="toggle-icon" aria-hidden="true">{defaultOpen ? '−' : '+'}</span>
+        </button>
+      )}
+    </div>
+  </div>
+  <div
+    class="section-body"
+    id={`${sectionId}-body`}
+    data-section-body={sectionId}
+    style={collapsible && !defaultOpen ? "display: none" : ""}
+  >
+    <slot />
+  </div>
+</section>
+
+{collapsible && (
+  <script>
+    declare global {
+      interface Window {
+        __sectionToggleInit?: boolean;
+      }
+    }
+    if (!window.__sectionToggleInit) {
+      window.__sectionToggleInit = true;
+      document.addEventListener('click', (e) => {
+        const btn = (e.target as Element).closest('[data-toggle-target]') as HTMLButtonElement | null;
+        if (!btn) return;
+
+        const sectionId = btn.dataset.toggleTarget;
+        const body = document.querySelector(`[data-section-body="${sectionId}"]`) as HTMLElement | null;
+        if (!body) return;
+
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const icon = btn.querySelector('.toggle-icon');
+
+        if (isExpanded) {
+          body.style.display = 'none';
+          btn.setAttribute('aria-expanded', 'false');
+          if (icon) icon.textContent = '+';
+        } else {
+          body.style.display = '';
+          btn.setAttribute('aria-expanded', 'true');
+          if (icon) icon.textContent = '−';
+        }
+      });
+    }
+  </script>
+)}
+
+<style>
+  /* page-section from BaseLayout provides border-top and x-padding */
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .section-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .section-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .section-title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  /* Big Newsreader display title */
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.25rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  /* ── Toggle button ───────────────────────────────────────── */
+  .section-toggle {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(2.5rem, 5vw, 3.5rem);
+    height: clamp(2.5rem, 5vw, 3.5rem);
+    background: none;
+    border: 1px solid var(--color-rule);
+    cursor: pointer;
+    color: var(--color-text);
+    transition: background 0.2s ease, color 0.2s ease;
+    margin-bottom: 0.2rem;
+  }
+
+  .section-toggle:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .section-toggle:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .toggle-icon {
+    font-family: var(--font-body);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .section-body {
+    padding-top: var(--space-sm);
+  }
+</style>
