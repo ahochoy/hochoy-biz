@@ -1,20 +1,20 @@
 [
   {
     "icon": "📸",
-    "title": "Instagram",
-    "description": "@hochoy",
-    "href": "https://instagram.com/hochoy"
+    "title": "Instagram / @ahochoy",
+    "description": "Follow my life behind-the-scenes and get a glimpse of my work and travels.",
+    "href": "https://instagram.com/ahochoy"
   },
   {
     "icon": "💼",
-    "title": "LinkedIn",
-    "description": "Andrew Hochoy",
-    "href": "https://linkedin.com/in/hochoy"
+    "title": "LinkedIn / ahochoy",
+    "description": "Stay up to date with my professional work and connect with me for business opportunities.",
+    "href": "https://www.linkedin.com/in/ahochoy/"
   },
   {
     "icon": "📰",
-    "title": "Substack",
-    "description": "Newsletter — insights on AI, business & growth",
+    "title": "Substack / hochoy",
+    "description": "Subscribe to my newsletter for insights on AI, business & growth.",
     "href": "https://hochoy.substack.com"
   }
 ]

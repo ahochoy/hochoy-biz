@@ -2,49 +2,49 @@
   {
     "id": "ai-implementation",
     "title": "AI Implementation",
-    "description": "Helping businesses leverage AI to drive real results",
+    "description": "Automate repetitive workflows and scale your output with custom-built AI solutions.",
     "colSpan": 1,
     "rowSpan": 2
   },
   {
     "id": "digital-marketing",
     "title": "Digital Marketing",
-    "description": "Expert-level strategy and execution",
+    "description": "Data-driven strategies designed to capture market attention and drive measurable revenue growth.",
     "colSpan": 1,
     "rowSpan": 1
   },
   {
     "id": "documents-presentations",
     "title": "Documents & Presentations",
-    "description": "Organize and communicate your ideas",
+    "description": "Win high-stakes pitches and professionalize your brand with persuasive visual storytelling.",
     "colSpan": 1,
     "rowSpan": 1
   },
   {
     "id": "software-engineering",
     "title": "Software Engineering",
-    "description": "Building custom software solutions",
+    "description": "Bespoke technical solutions built for speed, reliability, and effortless scaling.",
     "colSpan": 1,
     "rowSpan": 1
   },
   {
     "id": "project-management",
     "title": "Project Management",
-    "description": "Organizing and executing complex projects",
+    "description": "Streamline complex initiatives to ensure every goal is delivered on time and within budget.",
     "colSpan": 1,
     "rowSpan": 1
   },
   {
     "id": "productivity-operations",
     "title": "Productivity & Operations",
-    "description": "Optimize your systems for alignment and execution",
+    "description": "Optimize internal systems to eliminate bottlenecks and reclaim your leadership time.",
     "colSpan": 1,
     "rowSpan": 1
   },
   {
     "id": "people-culture",
     "title": "People & Culture",
-    "description": "Hiring, team management, and culture building",
+    "description": "Build a high-performance team with systems for elite hiring, training, and retention.",
     "colSpan": 2,
     "rowSpan": 1
   }

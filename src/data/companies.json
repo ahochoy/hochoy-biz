@@ -1,7 +1,10 @@
 [
-  { "name": "Loblaws",    "logoUrl": "" },
+  { "name": "Workday",    "logoUrl": "" },
   { "name": "Google",     "logoUrl": "" },
-  { "name": "Fiverr",     "logoUrl": "" },
-  { "name": "Mastercard", "logoUrl": "" },
-  { "name": "Loko",       "logoUrl": "" }
+  { "name": "ThoughtWorks",     "logoUrl": "" },
+  { "name": "HUGE", "logoUrl": "" },
+  { "name": "Gap",       "logoUrl": "" },
+  { "name": "MTV",       "logoUrl": "" },
+  { "name": "Nestle",       "logoUrl": "" },
+  { "name": "HBO",       "logoUrl": "" }
 ]

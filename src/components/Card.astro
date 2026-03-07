@@ -5,15 +5,18 @@ interface Props {
   description?: string;
   href: string;
   thumbnailUrl?: string;
+  comingSoon?: boolean;
 }
-const { icon, title, description, href, thumbnailUrl } = Astro.props;
+const { icon, title, description, href, thumbnailUrl, comingSoon = false } = Astro.props;
 ---
 
 <a
-  href={href}
-  target="_blank"
-  rel="noopener noreferrer"
-  class="card"
+  href={comingSoon ? undefined : href}
+  target={comingSoon ? undefined : "_blank"}
+  rel={comingSoon ? undefined : "noopener noreferrer"}
+  class:list={["card", { "card--coming-soon": comingSoon }]}
+  aria-disabled={comingSoon ? "true" : undefined}
+  tabindex={comingSoon ? -1 : undefined}
 >
   {thumbnailUrl
     ? <img src={thumbnailUrl} alt="" class="card-thumbnail" loading="lazy" />
@@ -27,7 +30,10 @@ const { icon, title, description, href, thumbnailUrl } = Astro.props;
     {description && <span class="card-desc">{description}</span>}
   </div>
 
-  <span class="card-arrow" aria-hidden="true">→</span>
+  {comingSoon
+    ? <span class="card-coming-soon">coming soon</span>
+    : <span class="card-arrow" aria-hidden="true">→</span>
+  }
 </a>
 
 <style>
@@ -137,5 +143,25 @@ const { icon, title, description, href, thumbnailUrl } = Astro.props;
     font-size: clamp(1.25rem, 2vw, 1.5rem);
     color: var(--color-text-muted);
     transition: transform 0.18s ease, color 0.18s ease;
+  }
+
+  /* ── Coming Soon ────────────────────────────────────────── */
+  .card--coming-soon {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .card-coming-soon {
+    flex-shrink: 0;
+    font-family: var(--font-body);
+    font-size: clamp(0.65rem, 1vw, 0.75rem);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-bg);
+    background: var(--color-text);
+    border: 1px solid currentColor;
+    padding: 0.25em 0.6em;
+    white-space: nowrap;
   }
 </style>

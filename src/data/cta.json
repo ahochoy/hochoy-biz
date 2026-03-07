@@ -1,8 +1,9 @@
 [
   {
     "icon": "📋",
-    "title": "Sign Up for the Waiting List",
-    "description": "AI Workshop for Business Owners",
-    "href": "https://hochoy.com/waiting-list"
+    "title": "Local AI Workshop for Business Owners",
+    "description": "Learn how to all about AI and how to start using it in your business with a hands-on workshop.",
+    "href": "#",
+    "comingSoon": true
   }
 ]
