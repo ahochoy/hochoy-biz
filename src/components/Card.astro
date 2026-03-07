@@ -27,7 +27,7 @@ const { icon, title, description, href, thumbnailUrl, comingSoon = false } = Ast
 
   <div class="card-body">
     <span class="card-title">{title}</span>
-    {description && <span class="card-desc">{description}</span>}
+    {description && <p class="card-desc">{description}</p>}
   </div>
 
   {comingSoon
@@ -121,9 +121,6 @@ const { icon, title, description, href, thumbnailUrl, comingSoon = false } = Ast
     line-height: 1.2;
     color: var(--color-text);
     transition: color 0.18s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .card-desc {
@@ -131,9 +128,6 @@ const { icon, title, description, href, thumbnailUrl, comingSoon = false } = Ast
     font-size: clamp(1rem, 1.2vw, 1.05rem);
     color: var(--color-text-muted);
     line-height: 1.4;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     transition: color 0.18s ease;
   }
 
