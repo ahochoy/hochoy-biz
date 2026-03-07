@@ -13,8 +13,14 @@
   },
   {
     "icon": "📰",
-    "title": "Substack / hochoy",
+    "title": "Substack / ahochoy",
     "description": "Subscribe to my newsletter for insights on AI, business & growth.",
-    "href": "https://hochoy.substack.com"
+    "href": "https://ahochoy.substack.com/"
+  },
+  {
+    "icon": "✍️",
+    "title": "X / ahochoy",
+    "description": "Follow me on X for quick thoughts on industry news and trends.",
+    "href": "https://x.com/ahochoy"
   }
 ]
