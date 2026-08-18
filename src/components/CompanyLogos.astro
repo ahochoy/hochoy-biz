@@ -2,62 +2,46 @@
 import companies from '../data/companies.json';
 ---
 
-<div class="logo-grid">
+<div class="logo-row">
   {companies.map((co) => (
-    <div class="logo-item">
-      {co.logoUrl
-        ? <img src={co.logoUrl} alt={co.name} loading="lazy" class="logo-img" />
-        : <span class="logo-text">{co.name}</span>
-      }
-    </div>
+    co.logoUrl
+      ? <img src={co.logoUrl} alt={co.name} loading="lazy" class="logo-img" />
+      : <span class="logo-word">{co.name}</span>
   ))}
 </div>
 
 <style>
-  /* Horizontal flex row — wraps on small screens */
-  .logo-grid {
+  .logo-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: clamp(2rem, 5vw, 4rem);
-    padding: var(--space-md) 0;
+    gap: clamp(0.75rem, 2.5vw, 2rem);
   }
 
-  .logo-item {
-    display: flex;
-    align-items: center;
+  .logo-word {
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 1.9vw, 1.5rem);
+    line-height: 1;
+    color: var(--color-body);
+    transition: color 0.18s ease;
   }
 
-  /* Image logos: grayscale at rest, full color on hover */
+  .logo-word:hover {
+    color: var(--color-accent);
+  }
+
   .logo-img {
-    height: clamp(1.5rem, 3vw, 2rem);
+    height: clamp(1.25rem, 2.4vw, 1.75rem);
     width: auto;
     max-width: 140px;
     object-fit: contain;
-    opacity: 0.5;
+    opacity: 0.6;
     filter: grayscale(1);
-    transition: opacity 0.2s ease, filter 0.2s ease;
+    transition: opacity 0.18s ease, filter 0.18s ease;
   }
 
   .logo-img:hover {
     opacity: 1;
     filter: grayscale(0);
-  }
-
-  /* Text fallback — large Newsreader, faded */
-  .logo-text {
-    font-family: var(--font-heading);
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
-    font-weight: 300;
-    letter-spacing: -0.025em;
-    color: var(--color-text);
-    opacity: 0.25;
-    white-space: nowrap;
-    transition: opacity 0.2s ease;
-    line-height: 1;
-  }
-
-  .logo-item:hover .logo-text {
-    opacity: 0.7;
   }
 </style>

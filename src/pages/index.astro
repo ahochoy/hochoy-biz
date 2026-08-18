@@ -13,16 +13,16 @@ import contentData from '../data/content.json';
 ---
 
 <BaseLayout
-  title="Andrew Hochoy"
+  title="Andrew HoChoy"
   description="Consultant, speaker, and entrepreneur based in the Bay Area. Helping businesses leverage AI and technology to grow."
 >
   <Hero />
 
-  <main class="main-container">
-    <Section title="Call to Action" collapsible={false}>
+  <main>
+    <Section title="Call to Action" layout="inline" accent={true} collapsible={false}>
       {ctaData.map((item) => (
         <Card
-          icon={item.icon}
+          variant="cta"
           title={item.title}
           description={item.description}
           href={item.href}
@@ -32,9 +32,9 @@ import contentData from '../data/content.json';
     </Section>
 
     <Section title="Connect" collapsible={true} defaultOpen={true}>
-      {connectData.map((item) => (
+      {connectData.map((item, i) => (
         <Card
-          icon={item.icon}
+          index={i + 1}
           title={item.title}
           description={item.description}
           href={item.href}
@@ -43,9 +43,9 @@ import contentData from '../data/content.json';
     </Section>
 
     <Section title="Content" collapsible={true} defaultOpen={true}>
-      {contentData.map((item) => (
+      {contentData.map((item, i) => (
         <Card
-          icon={item.icon}
+          index={connectData.length + i + 1}
           title={item.title}
           description={item.description}
           href={item.href}
@@ -57,22 +57,12 @@ import contentData from '../data/content.json';
       <BentoGrid />
     </Section>
 
-    <Section title="Companies I've Worked With" collapsible={false}>
+    <Section title="Companies I've Worked With" layout="inline" collapsible={false}>
       <CompanyLogos />
     </Section>
 
-    <Section title="Contact" collapsible={false}>
+    <Section title="Contact" layout="inline" collapsible={false}>
       <Contact />
     </Section>
-
   </main>
 </BaseLayout>
-
-<style>
-  .main-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2xl);
-    margin: var(--space-xl);
-  }
-</style>

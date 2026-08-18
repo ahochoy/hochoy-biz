@@ -3,35 +3,42 @@ interface Props {
   title: string;
   collapsible?: boolean;
   defaultOpen?: boolean;
+  /** 'stack' puts the label on its own rule; 'inline' seats it beside the content. */
+  layout?: 'stack' | 'inline';
+  accent?: boolean;
 }
 const {
   title,
   collapsible = false,
   defaultOpen = true,
+  layout = 'stack',
+  accent = false,
 } = Astro.props;
 
 const sectionId = `section-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
 
-<section class="section page-section" data-section-id={sectionId}>
-
+<section
+  class:list={["section", `section--${layout}`]}
+  id={sectionId}
+  data-section-id={sectionId}
+>
   <div class="section-header">
-    <div class="section-title-row">
-      <h2 class="section-title">{title}</h2>
+    <h2 class:list={["eyebrow", "section-title", { "section-title--accent": accent }]}>{title}</h2>
 
-      {collapsible && (
-        <button
-          class="section-toggle"
-          aria-expanded={defaultOpen ? "true" : "false"}
-          aria-controls={`${sectionId}-body`}
-          data-toggle-target={sectionId}
-          aria-label={`Toggle ${title} section`}
-        >
-          <span class="toggle-icon" aria-hidden="true">{defaultOpen ? '−' : '+'}</span>
-        </button>
-      )}
-    </div>
+    {collapsible && (
+      <button
+        class="section-toggle"
+        aria-expanded={defaultOpen ? "true" : "false"}
+        aria-controls={`${sectionId}-body`}
+        data-toggle-target={sectionId}
+        aria-label={`Toggle ${title} section`}
+      >
+        <span class="toggle-icon" aria-hidden="true">{defaultOpen ? '−' : '+'}</span>
+      </button>
+    )}
   </div>
+
   <div
     class="section-body"
     id={`${sectionId}-body`}
@@ -77,73 +84,80 @@ const sectionId = `section-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 )}
 
 <style>
-  /* page-section from BaseLayout provides border-top and x-padding */
-
-  /* ── Header ─────────────────────────────────────────────── */
-  .section-header {
-    margin-bottom: var(--space-lg);
+  .section {
+    border-bottom: 1px solid var(--color-rule);
   }
 
-  .section-label {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    margin-bottom: var(--space-xs);
-  }
-
-  .section-title-row {
+  /* ── Stacked: label rides its own hairline rule ─────────── */
+  .section--stack .section-header {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-md);
+    padding: clamp(0.65rem, 1.2vw, 0.9rem) var(--pad-x);
+    border-bottom: 1px solid var(--color-rule);
+    min-height: 2.75rem;
   }
 
-  /* Big Newsreader display title */
+  /* ── Inline: label sits to the left of the content ──────── */
+  .section--inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    padding: clamp(1rem, 2.25vw, 1.5rem) var(--pad-x);
+  }
+
+  .section--inline .section-header {
+    flex: none;
+  }
+
+  .section--inline .section-body {
+    flex: 1 1 20rem;
+  }
+
   .section-title {
-    font-family: var(--font-heading);
-    font-size: clamp(2.25rem, 7vw, 5.5rem);
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    color: var(--color-text);
+    color: var(--color-text-muted);
   }
 
-  /* ── Toggle button ───────────────────────────────────────── */
+  .section-title--accent {
+    color: var(--color-accent);
+  }
+
+  /* ── Toggle ─────────────────────────────────────────────── */
   .section-toggle {
-    flex-shrink: 0;
+    flex: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: clamp(2.5rem, 5vw, 3.5rem);
-    height: clamp(2.5rem, 5vw, 3.5rem);
+    width: 1.75rem;
+    height: 1.75rem;
     background: none;
-    border: 1px solid var(--color-rule);
+    border: 1px solid transparent;
     cursor: pointer;
-    color: var(--color-text);
-    transition: background 0.2s ease, color 0.2s ease;
-    margin-bottom: 0.2rem;
+    color: var(--color-text-muted);
+    transition: color 0.18s ease,
+                border-color 0.18s ease,
+                transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .section-toggle:hover {
-    background: var(--color-text);
-    color: var(--color-bg);
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .section-toggle:active {
+    transform: scale(0.94);
   }
 
   .section-toggle:focus-visible {
-    outline: 2px solid var(--color-text);
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
 
   .toggle-icon {
-    font-family: var(--font-body);
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-    font-weight: 300;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
     line-height: 1;
-  }
-
-  .section-body {
-    padding-top: var(--space-sm);
   }
 </style>
