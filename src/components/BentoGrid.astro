@@ -2,96 +2,101 @@
 import capabilities from '../data/capabilities.json';
 ---
 
-<div class="bento-grid">
-  {capabilities.map((cap) => (
-    <div
-      class="bento-card"
-      style={`grid-column: span ${cap.colSpan}; grid-row: span ${cap.rowSpan};`}
-      data-id={cap.id}
-    >
-      <div class="bento-inner">
-        <h3 class="bento-title">{cap.title}</h3>
-        {cap.description && <p class="bento-desc">{cap.description}</p>}
-      </div>
+<div class="cap-grid">
+  {capabilities.map((cap, i) => (
+    <div class="cap-cell" data-id={cap.id}>
+      <span class="cap-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <h3 class="cap-title">{cap.title}</h3>
+      {cap.description && <p class="cap-desc">{cap.description}</p>}
     </div>
   ))}
+  <div class="cap-cell cap-cell--mark" aria-hidden="true"></div>
 </div>
 
 <style>
-  /* ── Grid shell ─ 1px black rules between cells ─────────── */
-  .bento-grid {
+  /* Cells float on a rule-coloured ground; the 1px gaps read as printed rules. */
+  .cap-grid {
+    --cap-pad: clamp(0.875rem, 1.75vw, 1.25rem);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: clamp(8rem, 14vw, 12rem);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
-    background: var(--color-rule);
-    border: 1px solid var(--color-rule);
-    overflow: hidden;
+    background: var(--color-rule-hair);
   }
 
-  /* ── Each cell ───────────────────────────────────────────── */
-  .bento-card {
+  .cap-cell {
     background: var(--color-bg);
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-    transition: background 0.2s ease;
+    padding: var(--cap-pad) var(--cap-pad) clamp(1.125rem, 2vw, 1.5rem);
+    transition: background 0.18s ease;
   }
 
-  .bento-card:hover {
-    background: var(--color-text);
+  .cap-cell:hover {
+    background: var(--color-surface);
   }
 
-  .bento-card:hover .bento-title,
-  .bento-card:hover .bento-desc {
-    color: var(--color-bg);
+  .cap-num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    font-weight: 500;
+    color: var(--color-accent);
+    margin-bottom: 0.6rem;
   }
 
-  /* Content sits at the bottom of each cell */
-  .bento-inner {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: clamp(1rem, 2vw, 1.5rem);
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .bento-title {
-    font-family: var(--font-heading);
-    font-size: clamp(1.25rem, 2.5vw, 2rem);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    color: var(--color-text);
-    transition: color 0.2s ease;
-  }
-
-  .bento-desc {
+  .cap-title {
     font-family: var(--font-body);
-    font-size: clamp(1rem, 1.2vw, 1.05rem);
-    color: var(--color-text-muted);
+    font-weight: 500;
+    font-size: clamp(0.875rem, 1.15vw, 1rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    margin-bottom: 0.35rem;
+  }
+
+  .cap-desc {
+    font-size: clamp(0.8125rem, 0.95vw, 0.875rem);
     line-height: 1.4;
-    transition: color 0.2s ease;
+    color: var(--color-text-muted);
   }
 
-  /* ── Responsive ──────────────────────────────────────────── */
-  @media (max-width: 720px) {
-    .bento-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .bento-card {
-      grid-column: span 1 !important;
-      grid-row: span 1 !important;
-    }
+  /* Fills the seventh gap so the grid stays a complete rectangle. */
+  .cap-cell--mark {
+    background: var(--color-surface);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent 0 6px,
+      var(--color-rule-hair) 6px 7px
+    );
   }
 
-  @media (max-width: 640px) {
-    .bento-grid {
-      grid-template-columns: 1fr;
+  .cap-cell--mark:hover {
+    background: var(--color-surface);
+  }
+
+  /* Edge columns carry the page gutter so cell text lines up with every
+     other section, while the 1px rules still run full-bleed. */
+  .cap-cell:nth-child(4n + 1) { padding-left: var(--pad-x); }
+  .cap-cell:nth-child(4n)     { padding-right: var(--pad-x); }
+  .cap-cell:last-child        { padding-right: var(--pad-x); }
+
+  @media (max-width: 900px) {
+    .cap-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Reset the 4-column edges before applying the 2-column ones. */
+    .cap-cell:nth-child(4n + 1) { padding-left: var(--cap-pad); }
+    .cap-cell:nth-child(4n)     { padding-right: var(--cap-pad); }
+
+    .cap-cell:nth-child(2n + 1) { padding-left: var(--pad-x); }
+    .cap-cell:nth-child(2n)     { padding-right: var(--pad-x); }
+    .cap-cell:last-child        { padding-right: var(--pad-x); }
+  }
+
+  @media (max-width: 520px) {
+    .cap-grid { grid-template-columns: 1fr; }
+    .cap-cell--mark { display: none; }
+
+    .cap-cell {
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
     }
   }
 </style>

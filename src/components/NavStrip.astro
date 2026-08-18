@@ -1,25 +1,23 @@
 ---
-const moonIcon = "/icons/moon.svg";
-const sunIcon = "/icons/sun.svg";
+// Icons are inlined (not <img>) so they can inherit the panel's foreground
+// colour — the source SVGs hard-code a white fill and can't respond to theme.
 ---
 
 <nav class="hero-nav">
-  <span class="hero-nav-logo">AH.</span>
-  <div class="hero-nav-right">
-    <button
-      id="theme-toggle"
-      class="hero-theme-btn"
-      aria-label="Toggle dark mode"
-      title="Toggle dark / light mode"
-    >
-      <span class="theme-icon-light" aria-hidden="true">
-        <img src={sunIcon} width="20" height="20" alt="Light mode" />
-      </span>
-      <span class="theme-icon-dark" aria-hidden="true">
-        <img src={moonIcon} width="20" height="20" alt="Dark mode" />
-      </span>
-    </button>
-  </div>
+  <span class="hero-nav-logo">AH<span class="hero-nav-dot">.</span></span>
+  <button
+    id="theme-toggle"
+    class="hero-theme-btn"
+    aria-label="Toggle dark mode"
+    title="Toggle dark / light mode"
+  >
+    <svg class="theme-icon theme-icon-light" viewBox="0 0 48 48" width="16" height="16" aria-hidden="true">
+      <path fill="currentColor" fill-rule="evenodd" d="M24 31.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15m0 4.5a12 12 0 1 0 0-24 12 12 0 0 0 0 24m0-36a2.25 2.25 0 0 1 2.25 2.25v4.5a2.25 2.25 0 0 1-4.5 0v-4.5A2.25 2.25 0 0 1 24 0m0 39a2.25 2.25 0 0 1 2.25 2.25v4.5a2.25 2.25 0 0 1-4.5 0v-4.5A2.25 2.25 0 0 1 24 39M7.029 7.029a2.25 2.25 0 0 1 3.183 0l3.18 3.183a2.25 2.25 0 0 1-3.18 3.18l-3.18-3.18a2.25 2.25 0 0 1 0-3.18zm27.579 27.579a2.25 2.25 0 0 1 3.18 0l3.183 3.18a2.25 2.25 0 0 1-3.18 3.183l-3.183-3.18a2.25 2.25 0 0 1 0-3.183M48 24a2.25 2.25 0 0 1-2.25 2.25h-4.5a2.25 2.25 0 0 1 0-4.5h4.5A2.25 2.25 0 0 1 48 24M9 24a2.25 2.25 0 0 1-2.25 2.25h-4.5a2.25 2.25 0 0 1 0-4.5h4.5A2.25 2.25 0 0 1 9 24M40.971 7.029a2.25 2.25 0 0 1 0 3.183l-3.183 3.18a2.25 2.25 0 1 1-3.18-3.18l3.18-3.18a2.25 2.25 0 0 1 3.18 0zM13.392 34.608a2.25 2.25 0 0 1 0 3.18l-3.18 3.183a2.25 2.25 0 1 1-3.183-3.18l3.18-3.183a2.25 2.25 0 0 1 3.183 0" />
+    </svg>
+    <svg class="theme-icon theme-icon-dark" viewBox="0 0 48 48" width="16" height="16" aria-hidden="true">
+      <path fill="currentColor" d="M20 12a16 16 0 0 0 23.91 13.912C42.948 36.06 34.4 44 24 44 12.954 44 4 35.046 4 24 4 13.6 11.94 5.052 22.088 4.09A15.9 15.9 0 0 0 20 12M8 24a16 16 0 0 0 16 16 16 16 0 0 0 13.914-8.09Q36.964 32 36 32c-11.046 0-20-8.954-20-20q0-.962.09-1.914A16 16 0 0 0 8 24M36.328 4.582 38 5v2l-1.672.418a4 4 0 0 0-2.91 2.91L33 12h-2l-.418-1.672a4 4 0 0 0-2.91-2.91L26 7V5l1.672-.418a4 4 0 0 0 2.908-2.91L31 0h2l.418 1.672a4 4 0 0 0 2.91 2.91m10 10L48 15v2l-1.672.418a4 4 0 0 0-2.91 2.91L43 22h-2l-.418-1.672a4 4 0 0 0-2.91-2.91L36 17v-2l1.672-.418a4 4 0 0 0 2.91-2.91L41 10h2l.418 1.672a4 4 0 0 0 2.91 2.91" />
+    </svg>
+  </button>
 </nav>
 
 <script>
@@ -32,68 +30,72 @@ const sunIcon = "/icons/sun.svg";
 </script>
 
 <style>
-  /* ── Nav ──────────────────────────────────────────────── */
+  /* Sits over the halftone panel and takes its colour from the panel's
+     foreground token, so it reads in either theme. */
   .hero-nav {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: clamp(1rem, 3vw, 2rem) var(--pad-x);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.05); 
-    backdrop-filter: blur(6px);
+    padding: clamp(0.875rem, 2vw, 1.25rem) var(--pad-x);
+    color: var(--hero-fg);
   }
 
   .hero-nav-logo {
-    font-family: var(--font-heading);
-    font-size: clamp(0.85rem, 5vw, 2rem);
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    color: #ffffff;
-    
+    font-family: var(--font-body);
+    font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--hero-fg);
   }
 
-  .hero-nav-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  .hero-nav-dot {
+    color: var(--hero-mark);
   }
 
-  /* Dark mode toggle button */
   .hero-theme-btn {
     background: none;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
+    border: 1px solid var(--hero-hairline);
+    color: var(--hero-fg);
     cursor: pointer;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-    transition: border-color 0.2s ease, background 0.2s ease;
     padding: 0;
+    transition: border-color 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.18s ease,
+                transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .hero-theme-btn:hover {
-    border-color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--hero-mark);
+    color: var(--hero-mark);
+    transform: translateY(-1px);
+  }
+
+  .hero-theme-btn:active {
+    transform: translateY(0);
   }
 
   .hero-theme-btn:focus-visible {
-    outline: 2px solid #ffffff;
+    outline: 2px solid var(--hero-mark);
     outline-offset: 2px;
   }
 
-  /* Show moon in light mode, sun in dark mode */
+  .theme-icon {
+    display: block;
+  }
+
+  /* Sun while the page is light, moon once it's dark */
   .theme-icon-dark  { display: none; }
-  .theme-icon-light { display: inline; }
+  .theme-icon-light { display: block; }
 
   :global(.dark) .theme-icon-light { display: none; }
-  :global(.dark) .theme-icon-dark  { display: inline; }
-
-  @media (max-width: 480px) {
-    .hero-nav-scroll { display: none; }
-  }
+  :global(.dark) .theme-icon-dark  { display: block; }
 </style>

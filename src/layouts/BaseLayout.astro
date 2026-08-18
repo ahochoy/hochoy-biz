@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 const {
-  title = "Andrew Hochoy",
+  title = "Andrew HoChoy",
   description = "Consultant, Speaker, Entrepreneur — Bay Area"
 } = Astro.props;
 ---
@@ -24,22 +24,52 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,700;1,6..72,400&family=Instrument+Sans:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
     <style is:global>
       /* ─── Design Tokens ──────────────────────────────────────── */
       :root {
-        --color-bg:           #E0E1DD;
-        --color-text:         #0D1B2A;
-        --color-text-muted:   #1B263B;
-        --color-rule:         #0D1B2A;
-        --color-surface:      #f5f5f3;
+        /* Raw brand values */
+        --paper:   #f4f1e8;
+        --ink:     #17150f;
+        --blue:    #1f3fd8;
+        --yellow:  #e6ff2e;
+
+        /* Semantic surface + text */
+        --color-bg:         var(--paper);
+        --color-text:       var(--ink);
+        --color-body:       #3a3527;
+        --color-text-muted: #6e6858;
+        --color-surface:    #eee9dc;
+
+        /* Rules: heavy structural rule + hairline row divider */
+        --color-rule:      var(--ink);
+        --color-rule-hair: #d8d2c2;
+
+        /* Hero panel — the halftone prints blue on paper in daylight,
+           neon on ink after dark. */
+        --hero-bg:     var(--paper);
+        --hero-dither: var(--blue);
+        --hero-fg:     var(--ink);
+        --hero-fg-dim: #6e6858;
+        --hero-mark:   var(--blue);
+        --hero-hairline: rgba(23, 21, 15, 0.28);
+
+        /* Accents */
+        --color-accent:          var(--blue);
+        --color-accent-contrast: var(--paper);
+        --color-highlight:       var(--yellow);
+        --color-highlight-ink:   var(--ink);
 
         /* Typography */
-        --font-heading: 'Newsreader', Georgia, serif;
-        --font-body:    'Instrument Sans', system-ui, sans-serif;
+        --font-display: 'Instrument Serif', Georgia, serif;
+        --font-body:    'Space Grotesk', system-ui, sans-serif;
+        --font-mono:    'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+        /* Alias kept for any legacy reference */
+        --font-heading: var(--font-display);
 
         /* Fluid spacing — Utopia-based */
         --space-xs:   clamp(0.25rem, 0.5vw, 0.375rem);
@@ -50,16 +80,34 @@ const {
         --space-2xl:  clamp(4rem,    8vw,   7rem);
 
         /* Horizontal page padding */
-        --pad-x: clamp(1.5rem, 6vw, 6rem);
+        --pad-x: clamp(1.25rem, 4vw, 4.5rem);
+
+        /* Mono label treatment used across every section eyebrow */
+        --label-size: clamp(0.625rem, 0.85vw, 0.75rem);
+        --label-track: 0.2em;
       }
 
-      /* Dark mode */
+      /* Dark mode — the paper turns to ink, the ink to paper.
+         Blue lifts so it keeps contrast against a dark ground. */
       .dark {
-        --color-bg:         #0D1B2A;
-        --color-text:       #E0E1DD;
-        --color-text-muted: #778DA9;
-        --color-rule:       #1B263B;
-        --color-surface:    #1B263B;
+        --color-bg:         #141310;
+        --color-text:       var(--paper);
+        --color-body:       #cfc9b8;
+        --color-text-muted: #8d8778;
+        --color-surface:    #1c1a15;
+
+        --color-rule:      #4a4433;
+        --color-rule-hair: #2a2620;
+
+        --color-accent:          #7b90ff;
+        --color-accent-contrast: #0f0e0b;
+
+        --hero-bg:     var(--ink);
+        --hero-dither: var(--yellow);
+        --hero-fg:     var(--paper);
+        --hero-fg-dim: #8d8778;
+        --hero-mark:   var(--yellow);
+        --hero-hairline: rgba(244, 241, 232, 0.28);
       }
 
       /* ─── Reset ──────────────────────────────────────────────── */
@@ -80,8 +128,8 @@ const {
         background-color: var(--color-bg);
         color: var(--color-text);
         font-family: var(--font-body);
-        font-size: clamp(1rem, 1.25vw, 1.125rem);
-        line-height: 1.65;
+        font-size: clamp(0.9375rem, 1vw, 1.0625rem);
+        line-height: 1.55;
         min-height: 100vh;
         transition: background-color 0.25s ease, color 0.25s ease;
       }
@@ -89,6 +137,25 @@ const {
       a {
         color: inherit;
         text-decoration: none;
+      }
+
+      /* Shared mono eyebrow, used by every section label */
+      .eyebrow {
+        font-family: var(--font-mono);
+        font-size: var(--label-size);
+        font-weight: 500;
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
       }
     </style>
     <!-- Google tag (gtag.js) -->

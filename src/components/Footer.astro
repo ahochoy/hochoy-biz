@@ -3,28 +3,29 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <span class="footer-copy">Andrew Hochoy</span>
-  <span>&copy; {year} — Bay Area, CA</span>
+  <span class="footer-name">Andrew HoChoy</span>
+  <span class="eyebrow footer-meta">&copy; {year} — Bay Area, CA</span>
 </footer>
 
 <style>
   .site-footer {
-    padding: var(--space-lg) var(--pad-x);
-    border-top: 1px solid var(--color-rule);
+    padding: clamp(0.875rem, 1.75vw, 1.25rem) var(--pad-x);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-md);
     flex-wrap: wrap;
-    font-family: var(--font-body);
-    font-size: 1rem;
-    color: var(--color-text-muted);
   }
 
-  .footer-copy {
-    font-family: var(--font-heading);
-    font-size: clamp(1rem, 2vw, 1.25rem);
+  .footer-name {
+    font-family: var(--font-display);
     font-style: italic;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
     color: var(--color-text);
+  }
+
+  .footer-meta {
+    letter-spacing: 0.16em;
+    color: var(--color-text-muted);
   }
 </style>
