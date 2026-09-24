@@ -6,10 +6,11 @@ import Card from '../components/Card.astro';
 import BentoGrid from '../components/BentoGrid.astro';
 import CompanyLogos from '../components/CompanyLogos.astro';
 import Contact from '../components/Contact.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Householder from '../components/Householder.astro';
 
 import ctaData from '../data/cta.json';
 import connectData from '../data/connect.json';
-import contentData from '../data/content.json';
 
 // Call to Action is parked for now. Flip to true to bring the section back;
 // its content still lives in src/data/cta.json.
@@ -49,14 +50,7 @@ const showCta = false;
     </Section>
 
     <Section title="Content" collapsible={true} defaultOpen={true}>
-      {contentData.map((item, i) => (
-        <Card
-          index={connectData.length + i + 1}
-          title={item.title}
-          description={item.description}
-          href={item.href}
-        />
-      ))}
+      <Newsletter />
     </Section>
 
     <Section title="Capabilities" collapsible={true} defaultOpen={true}>
@@ -66,6 +60,8 @@ const showCta = false;
     <Section title="Companies I've Worked With" layout="inline" collapsible={false}>
       <CompanyLogos />
     </Section>
+
+    <Householder />
 
     <Section title="Contact" layout="inline" collapsible={false}>
       <Contact />

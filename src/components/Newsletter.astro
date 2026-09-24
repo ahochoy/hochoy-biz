@@ -1,0 +1,117 @@
+---
+import newsletter from '../data/content.json';
+---
+
+<div class="nl">
+  <div class="nl-body">
+    <img src={newsletter.wordmark} alt={newsletter.name} class="nl-wordmark" height="44" />
+    <p class="nl-desc">{newsletter.description}</p>
+    <p class="eyebrow nl-cadence">{newsletter.cadence}</p>
+  </div>
+
+  <div class="nl-actions">
+    <a href={newsletter.latestHref} target="_blank" rel="noopener noreferrer" class="nl-btn nl-btn--ghost">
+      Latest post <span aria-hidden="true">→</span>
+    </a>
+    <a href={newsletter.subscribeHref} target="_blank" rel="noopener noreferrer" class="nl-btn nl-btn--subscribe">
+      Subscribe
+    </a>
+  </div>
+</div>
+
+<style>
+  .nl {
+    /* Substack's own orange, kept to the Subscribe button */
+    --substack: #ff5a00;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--space-md) var(--space-lg);
+    padding: var(--space-lg) var(--pad-x);
+  }
+
+  .nl-wordmark {
+    display: block;
+    height: clamp(2.25rem, 3.5vw, 2.75rem);
+    width: auto;
+    max-width: 100%;
+    mix-blend-mode: multiply;
+  }
+
+  /* Multiply vanishes on a dark ground; flip the ink and screen it instead. */
+  :global(.dark) .nl-wordmark {
+    filter: invert(1) hue-rotate(180deg);
+    mix-blend-mode: screen;
+  }
+
+  .nl-desc {
+    margin-top: var(--space-md);
+    max-width: 56ch;
+    font-size: clamp(0.9375rem, 1.1vw, 1rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    text-wrap: pretty;
+  }
+
+  .nl-cadence {
+    margin-top: var(--space-sm);
+    letter-spacing: 0.14em;
+    line-height: 1.7;
+    color: var(--color-accent);
+  }
+
+  .nl-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nl-btn {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(0.8125rem, 1vw, 0.875rem);
+    line-height: 1;
+    padding: 0.85em 1.15em;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.18s ease;
+  }
+
+  .nl-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .nl-btn:active {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  .nl-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .nl-btn--ghost {
+    border-color: var(--color-rule);
+    color: var(--color-text);
+  }
+
+  .nl-btn--subscribe {
+    background: var(--substack);
+    color: #fff;
+  }
+
+  @media (max-width: 640px) {
+    .nl {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .nl-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+</style>
