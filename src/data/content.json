@@ -1,8 +1,8 @@
-[
-  {
-    "icon": "✍️",
-    "title": "Latest Post on Substack",
-    "description": "Read the newest issue of my newsletter",
-    "href": "https://ahochoy.substack.com/"
-  }
-]
+{
+  "name": "Built Without Permission",
+  "wordmark": "/images/bwp-wordmark.png",
+  "description": "Dispatches from the messy middle of solo software development—bridging AI prototypes, production code, and the psychology of shipping alone.",
+  "cadence": "One essay every Wednesday · Occasional short notes",
+  "latestHref": "https://ahochoy.substack.com/",
+  "subscribeHref": "https://ahochoy.substack.com/subscribe"
+}

@@ -1,0 +1,228 @@
+---
+import app from '../data/householder.json';
+---
+
+<section class="hh" aria-labelledby="householder-title">
+  <div class="hh-copy">
+    <div class="hh-badge">
+      <img src={app.icon} alt="" class="hh-icon" width="44" height="44" />
+      <span class="eyebrow hh-status">{app.status}</span>
+    </div>
+
+    <h2 id="householder-title" class="hh-title">
+      {app.headline} <em>{app.name}.</em>
+    </h2>
+    <p class="hh-desc">{app.description}</p>
+
+    <div class="hh-actions">
+      <a href={app.href} target="_blank" rel="noopener noreferrer" class="hh-cta">
+        {app.ctaLabel} <span aria-hidden="true">→</span>
+      </a>
+      <a href={app.href} target="_blank" rel="noopener noreferrer" class="hh-domain">
+        {app.domain}
+      </a>
+    </div>
+  </div>
+
+  <div class="hh-phone">
+    <img src={app.screenshot} alt={`${app.name} home screen`} class="hh-screen" loading="lazy" />
+  </div>
+</section>
+
+<style>
+  /* A poster, not a surface: the band keeps its own palette in each theme.
+     Light is the flat brand blue; dark drops to ultramarine and lets a
+     halftone field of electric blue glow up behind the phone. */
+  .hh {
+    --hh-bg:     var(--blue);
+    --hh-fg:     var(--paper);
+    --hh-muted:  #dfe3fb;
+    --hh-accent: var(--yellow);
+    --hh-rim:    rgba(244, 241, 232, 0.5);
+    --hh-frame:  var(--ink);
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(13.75rem, 18.75rem);
+    gap: var(--space-lg);
+    padding: var(--space-xl) var(--pad-x) 0;
+    background: var(--hh-bg);
+    color: var(--hh-fg);
+    border-bottom: 1px solid var(--color-rule);
+    overflow: hidden;
+    position: relative;
+  }
+
+  :global(.dark) .hh {
+    --hh-bg:     #0e1646;
+    --hh-muted:  #b9c2f2;
+    --hh-rim:    rgba(123, 144, 255, 0.55);
+    --hh-frame:  #05081f;
+
+    /* Dot field: 6px halftone grid masked to a glow that swells behind the
+       phone, over a soft radial of the light-mode blue. */
+    background:
+      radial-gradient(circle, rgba(123, 144, 255, 0.55) 1.1px, transparent 1.6px) 0 0 / 6px 6px,
+      radial-gradient(ellipse 60% 90% at 85% 100%, rgba(31, 63, 216, 0.85), transparent 70%),
+      var(--hh-bg);
+  }
+
+  /* Keep the dots only where the glow is, so the copy sits on clean ground. */
+  :global(.dark) .hh::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(100deg, var(--hh-bg) 35%, transparent 75%);
+  }
+
+  .hh > * {
+    position: relative;
+  }
+
+  .hh-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: var(--space-xl);
+  }
+
+  .hh-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .hh-icon {
+    display: block;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.625rem;
+    border: 1px solid var(--hh-rim);
+  }
+
+  .hh-status {
+    color: var(--hh-accent);
+  }
+
+  .hh-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.25rem, 4.6vw, 3.25rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+
+  .hh-desc {
+    margin-top: var(--space-sm);
+    max-width: 42ch;
+    font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
+    line-height: 1.5;
+    color: var(--hh-muted);
+    text-wrap: pretty;
+  }
+
+  .hh-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.125rem;
+    margin-top: var(--space-lg);
+  }
+
+  .hh-cta {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(0.875rem, 1.1vw, 0.9375rem);
+    line-height: 1;
+    padding: 0.85em 1.2em;
+    background: var(--hh-accent);
+    color: var(--ink);
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.18s ease;
+  }
+
+  .hh-cta:hover {
+    transform: translateY(-2px);
+  }
+
+  .hh-cta:active {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  .hh-domain {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--hh-muted);
+    transition: color 0.18s ease;
+  }
+
+  .hh-domain:hover {
+    color: var(--hh-accent);
+  }
+
+  .hh-domain:active {
+    opacity: 0.8;
+  }
+
+  .hh-cta:focus-visible,
+  .hh-domain:focus-visible {
+    outline: 2px solid var(--hh-accent);
+    outline-offset: 3px;
+  }
+
+  /* Phone frame, cropped by the band's bottom edge */
+  .hh-phone {
+    align-self: end;
+    height: 21.25rem;
+    padding: 0.5rem 0.5rem 0;
+    background: var(--hh-frame);
+    border: 3px solid var(--hh-frame);
+    border-bottom: 0;
+    border-radius: 2.125rem 2.125rem 0 0;
+    overflow: hidden;
+  }
+
+  /* A lit rim so the handset reads against the dark band. */
+  :global(.dark) .hh-phone {
+    box-shadow:
+      0 0 0 1px var(--hh-rim),
+      0 -12px 48px -8px rgba(123, 144, 255, 0.35);
+  }
+
+  .hh-screen {
+    display: block;
+    width: 100%;
+    border-radius: 1.625rem 1.625rem 0 0;
+  }
+
+  @media (max-width: 640px) {
+    .hh {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .hh-phone {
+      justify-self: center;
+      width: min(100%, 16.25rem);
+      height: 17.5rem;
+    }
+
+    /* Stacked: the phone sits below the copy, so the glow and the
+       dot mask turn to run top-to-bottom. */
+    :global(.dark) .hh {
+      background:
+        radial-gradient(circle, rgba(123, 144, 255, 0.55) 1.1px, transparent 1.6px) 0 0 / 6px 6px,
+        radial-gradient(ellipse 90% 45% at 50% 100%, rgba(31, 63, 216, 0.85), transparent 70%),
+        var(--hh-bg);
+    }
+
+    :global(.dark) .hh::before {
+      background: linear-gradient(to bottom, var(--hh-bg) 55%, transparent 85%);
+    }
+  }
+</style>
