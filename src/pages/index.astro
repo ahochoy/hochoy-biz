@@ -10,6 +10,10 @@ import Contact from '../components/Contact.astro';
 import ctaData from '../data/cta.json';
 import connectData from '../data/connect.json';
 import contentData from '../data/content.json';
+
+// Call to Action is parked for now. Flip to true to bring the section back;
+// its content still lives in src/data/cta.json.
+const showCta = false;
 ---
 
 <BaseLayout
@@ -19,17 +23,19 @@ import contentData from '../data/content.json';
   <Hero />
 
   <main>
-    <Section title="Call to Action" layout="inline" accent={true} collapsible={false}>
-      {ctaData.map((item) => (
-        <Card
-          variant="cta"
-          title={item.title}
-          description={item.description}
-          href={item.href}
-          comingSoon={item.comingSoon}
-        />
-      ))}
-    </Section>
+    {showCta && (
+      <Section title="Call to Action" layout="inline" accent={true} collapsible={false}>
+        {ctaData.map((item) => (
+          <Card
+            variant="cta"
+            title={item.title}
+            description={item.description}
+            href={item.href}
+            comingSoon={item.comingSoon}
+          />
+        ))}
+      </Section>
+    )}
 
     <Section title="Connect" collapsible={true} defaultOpen={true}>
       {connectData.map((item, i) => (
@@ -53,7 +59,7 @@ import contentData from '../data/content.json';
       ))}
     </Section>
 
-    <Section title="Capabilities" collapsible={false}>
+    <Section title="Capabilities" collapsible={true} defaultOpen={true}>
       <BentoGrid />
     </Section>
 

@@ -9,6 +9,10 @@ const {
   title = "Andrew HoChoy",
   description = "Consultant, Speaker, Entrepreneur — Bay Area"
 } = Astro.props;
+
+// DOS-style path for the window title bar: "/" -> C:\HOCHOY\INDEX.HTM
+const pagePath = Astro.url.pathname.replace(/^\/+|\/+$/g, '') || 'index';
+const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.HTM`;
 ---
 <!doctype html>
 <html lang="en">
@@ -137,6 +141,58 @@ const {
         text-decoration: none;
       }
 
+      /* ─── Window ─────────────────────────────────────────────
+         Every page sits inside one DOS-style window: a 1px frame
+         capped by a title bar whose double rules run out to the
+         control boxes. Full-bleed below 1440px, centred above. */
+      .window {
+        max-width: 1440px;
+        margin-inline: auto;
+        border: 1px solid var(--color-rule);
+        background: var(--color-bg);
+      }
+
+      .window-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        height: 2rem;
+        padding: 0 0.75rem;
+        border-bottom: 1px solid var(--color-rule);
+        font-family: var(--font-mono);
+        font-size: var(--label-size);
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        line-height: 1;
+        color: var(--color-text);
+        user-select: none;
+      }
+
+      /* Two hairlines 3px apart — the DOS double rule, drawn fine. */
+      .window-rule {
+        flex: 1 1 0;
+        min-width: 1rem;
+        height: 5px;
+        border-block: 1px solid var(--color-rule);
+      }
+
+      .window-title {
+        flex: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70%;
+      }
+
+      .window-ctl {
+        flex: none;
+        color: var(--color-text-muted);
+      }
+
+      @media (min-width: 1440px) {
+        body { padding-block: var(--space-lg); }
+      }
+
       /* Shared mono eyebrow, used by every section label */
       .eyebrow {
         font-family: var(--font-mono);
@@ -168,9 +224,19 @@ const {
     </script>
   </head>
   <body>
-    <slot />
+    <div class="window">
+      <div class="window-bar" aria-hidden="true">
+        <span class="window-ctl">[■]</span>
+        <span class="window-rule"></span>
+        <span class="window-title">{windowTitle}</span>
+        <span class="window-rule"></span>
+        <span class="window-ctl">[↕]</span>
+      </div>
 
-    <Footer />
+      <slot />
+
+      <Footer />
+    </div>
 
     <!-- Dark/light mode persistence -->
     <script is:inline>
