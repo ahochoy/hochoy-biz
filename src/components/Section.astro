@@ -89,14 +89,16 @@ const sectionId = `section-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   }
 
   /* ── Stacked: label rides its own hairline rule ─────────── */
+  /* Fixed height (not padding-driven) so every stacked header matches,
+     whether or not it carries a toggle button. */
   .section--stack .section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-md);
-    padding: clamp(0.65rem, 1.2vw, 0.9rem) var(--pad-x);
+    padding: 0 var(--pad-x);
     border-bottom: 1px solid var(--color-rule);
-    min-height: 2.75rem;
+    height: 3.5rem;
   }
 
   /* ── Inline: label sits to the left of the content ──────── */
