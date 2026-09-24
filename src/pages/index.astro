@@ -8,6 +8,7 @@ import CompanyLogos from '../components/CompanyLogos.astro';
 import Contact from '../components/Contact.astro';
 import Newsletter from '../components/Newsletter.astro';
 import Householder from '../components/Householder.astro';
+import Currently from '../components/Currently.astro';
 
 import ctaData from '../data/cta.json';
 import connectData from '../data/connect.json';
@@ -24,6 +25,10 @@ const showCta = false;
   <Hero />
 
   <main>
+    <Section title="Currently" layout="inline" collapsible={false}>
+      <Currently />
+    </Section>
+
     {showCta && (
       <Section title="Call to Action" layout="inline" accent={true} collapsible={false}>
         {ctaData.map((item) => (
