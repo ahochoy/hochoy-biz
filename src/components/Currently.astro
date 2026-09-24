@@ -1,0 +1,83 @@
+---
+import current from '../data/currently.json';
+---
+
+<div class="now">
+  <div class="now-body">
+    <img src={current.logo} alt={current.name} class="now-logo" height="16" />
+    <p class="now-text">
+      {current.role} <strong>{current.name}</strong> — {current.tagline}
+    </p>
+  </div>
+
+  <a href={current.href} target="_blank" rel="noopener noreferrer" class="now-btn">
+    {current.ctaLabel} <span aria-hidden="true">→</span>
+  </a>
+</div>
+
+<style>
+  .now {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+
+  .now-body {
+    flex: 1 1 20rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem 1.125rem;
+  }
+
+  /* The logo ships white; darken it to ink on paper. */
+  .now-logo {
+    display: block;
+    height: 1rem;
+    width: auto;
+    filter: invert(1) brightness(0.1);
+  }
+
+  :global(.dark) .now-logo {
+    filter: none;
+  }
+
+  .now-text {
+    font-size: clamp(0.9375rem, 1.1vw, 1rem);
+    line-height: 1.45;
+    color: var(--color-body);
+  }
+
+  .now-text strong {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .now-btn {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(0.8125rem, 1vw, 0.875rem);
+    line-height: 1;
+    padding: 0.85em 1.15em;
+    white-space: nowrap;
+    border: 1px solid var(--color-rule);
+    color: var(--color-text);
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.18s ease;
+  }
+
+  .now-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .now-btn:active {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  .now-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+</style>
