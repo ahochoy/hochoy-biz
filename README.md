@@ -14,6 +14,7 @@ Personal website of Andrew HoChoy: a one-page, link-in-bio style site that colle
 ```sh
 pnpm install
 pnpm dev        # local dev server at localhost:4321
+pnpm test       # run smoke and data tests
 pnpm build      # production build to ./dist/
 pnpm deploy     # build and deploy to Cloudflare
 ```

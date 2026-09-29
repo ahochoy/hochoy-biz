@@ -8,7 +8,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "astro build && wrangler deploy",
-    "cf:preview": "astro build && wrangler dev"
+    "cf:preview": "astro build && wrangler dev",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
@@ -16,7 +18,9 @@
     "astro": "^5.17.1"
   },
   "devDependencies": {
+    "cheerio": "^1.2.0",
     "puppeteer": "^24.38.0",
+    "vitest": "^5.0.2",
     "wrangler": "^4.71.0"
   },
   "pnpm": {
