@@ -4,7 +4,7 @@ import cloudflare from '@astrojs/cloudflare';
 import partytown from '@astrojs/partytown';
 
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: process.env.VITEST ? undefined : cloudflare(),
   integrations: [partytown({
     config: {
       forward: ['dataLayer.push'],
