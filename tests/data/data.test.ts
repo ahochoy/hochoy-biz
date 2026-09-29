@@ -8,6 +8,7 @@ import companies from '../../src/data/companies.json';
 import content from '../../src/data/content.json';
 import cta from '../../src/data/cta.json';
 import householder from '../../src/data/householder.json';
+import currently from '../../src/data/currently.json';
 
 describe('Data Integrity Smoke Tests', () => {
   it('capabilities.json contains valid items', () => {
@@ -101,6 +102,20 @@ describe('Data Integrity Smoke Tests', () => {
     });
 
     const parsed = z.array(CtaSchema).safeParse(cta);
+    expect(parsed.success).toBe(true);
+  });
+
+  it('currently.json contains valid current project details', () => {
+    const CurrentlySchema = z.object({
+      name: z.string().min(1),
+      logo: z.string().min(1),
+      role: z.string().min(1),
+      tagline: z.string().min(1),
+      ctaLabel: z.string().min(1),
+      href: z.string().url(),
+    });
+
+    const parsed = CurrentlySchema.safeParse(currently);
     expect(parsed.success).toBe(true);
   });
 });

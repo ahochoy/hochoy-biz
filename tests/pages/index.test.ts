@@ -13,6 +13,7 @@ describe('Page: index.astro', () => {
     expect($('h1.hero-name').length).toBe(1);
 
     // Key content sections
+    expect($('#section-currently').length).toBe(1);
     expect($('#section-connect').length).toBe(1);
     expect($('#section-content').length).toBe(1);
     expect($('#section-capabilities').length).toBe(1);
