@@ -24,11 +24,12 @@ import newsletter from '../data/content.json';
     /* Substack's own orange, kept to the Subscribe button */
     --substack: #ff5a00;
 
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-    gap: var(--space-md) var(--space-lg);
-    padding: var(--space-lg) var(--pad-x);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: var(--space-md);
+    padding: var(--space-lg) var(--space-lg) var(--space-lg) var(--pad-x);
   }
 
   .nl-wordmark {
@@ -63,8 +64,10 @@ import newsletter from '../data/content.json';
 
   .nl-actions {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 0.5rem;
+    margin-top: var(--space-sm);
   }
 
   .nl-btn {
@@ -104,14 +107,9 @@ import newsletter from '../data/content.json';
     color: #fff;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 860px) {
     .nl {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .nl-actions {
-      flex-direction: row;
-      flex-wrap: wrap;
+      padding: var(--space-lg) var(--pad-x);
     }
   }
 </style>

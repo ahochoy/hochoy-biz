@@ -1,0 +1,185 @@
+---
+interface Breadcrumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  breadcrumbs?: Breadcrumb[];
+}
+
+const { breadcrumbs = [] } = Astro.props;
+---
+
+<header class="devlog-nav">
+  <div class="devlog-nav-left">
+    <a href="/" class="devlog-nav-logo" aria-label="Go to homepage">
+      AH<span class="devlog-nav-dot">.</span>
+    </a>
+
+    <nav class="devlog-nav-crumbs" aria-label="Breadcrumbs">
+      <span class="crumb-sep" aria-hidden="true">/</span>
+      <a href="/" class="crumb-link">INDEX</a>
+      {breadcrumbs.map((crumb) => (
+        <>
+          <span class="crumb-sep" aria-hidden="true">/</span>
+          {crumb.href ? (
+            <a href={crumb.href} class="crumb-link">{crumb.label}</a>
+          ) : (
+            <span class="crumb-current" aria-current="page">{crumb.label}</span>
+          )}
+        </>
+      ))}
+    </nav>
+  </div>
+
+  <div class="devlog-nav-right">
+    <button
+      id="devlog-theme-toggle"
+      class="devlog-theme-btn"
+      aria-label="Toggle dark mode"
+      title="Toggle dark / light mode"
+    >
+      <svg class="theme-icon theme-icon-light" viewBox="0 0 48 48" width="16" height="16" aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" d="M24 31.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15m0 4.5a12 12 0 1 0 0-24 12 12 0 0 0 0 24m0-36a2.25 2.25 0 0 1 2.25 2.25v4.5a2.25 2.25 0 0 1-4.5 0v-4.5A2.25 2.25 0 0 1 24 0m0 39a2.25 2.25 0 0 1 2.25 2.25v4.5a2.25 2.25 0 0 1-4.5 0v-4.5A2.25 2.25 0 0 1 24 39M7.029 7.029a2.25 2.25 0 0 1 3.183 0l3.18 3.183a2.25 2.25 0 0 1-3.18 3.18l-3.18-3.18a2.25 2.25 0 0 1 0-3.18zm27.579 27.579a2.25 2.25 0 0 1 3.18 0l3.183 3.18a2.25 2.25 0 0 1-3.18 3.183l-3.183-3.18a2.25 2.25 0 0 1 0-3.183M48 24a2.25 2.25 0 0 1-2.25 2.25h-4.5a2.25 2.25 0 0 1 0-4.5h4.5A2.25 2.25 0 0 1 48 24M9 24a2.25 2.25 0 0 1-2.25 2.25h-4.5a2.25 2.25 0 0 1 0-4.5h4.5A2.25 2.25 0 0 1 9 24M40.971 7.029a2.25 2.25 0 0 1 0 3.183l-3.183 3.18a2.25 2.25 0 1 1-3.18-3.18l3.18-3.18a2.25 2.25 0 0 1 3.18 0zM13.392 34.608a2.25 2.25 0 0 1 0 3.18l-3.18 3.183a2.25 2.25 0 1 1-3.183-3.18l3.18-3.183a2.25 2.25 0 0 1 3.183 0" />
+      </svg>
+      <svg class="theme-icon theme-icon-dark" viewBox="0 0 48 48" width="16" height="16" aria-hidden="true">
+        <path fill="currentColor" d="M20 12a16 16 0 0 0 23.91 13.912C42.948 36.06 34.4 44 24 44 12.954 44 4 35.046 4 24 4 13.6 11.94 5.052 22.088 4.09A15.9 15.9 0 0 0 20 12M8 24a16 16 0 0 0 16 16 16 16 0 0 0 13.914-8.09Q36.964 32 36 32c-11.046 0-20-8.954-20-20q0-.962.09-1.914A16 16 0 0 0 8 24M36.328 4.582 38 5v2l-1.672.418a4 4 0 0 0-2.91 2.91L33 12h-2l-.418-1.672a4 4 0 0 0-2.91-2.91L26 7V5l1.672-.418a4 4 0 0 0 2.908-2.91L31 0h2l.418 1.672a4 4 0 0 0 2.91 2.91m10 10L48 15v2l-1.672.418a4 4 0 0 0-2.91 2.91L43 22h-2l-.418-1.672a4 4 0 0 0-2.91-2.91L36 17v-2l1.672-.418a4 4 0 0 0 2.91-2.91L41 10h2l.418 1.672a4 4 0 0 0 2.91 2.91" />
+      </svg>
+    </button>
+  </div>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById('devlog-theme-toggle');
+  toggleBtn?.addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  });
+</script>
+
+<style>
+  .devlog-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.5rem;
+    padding: 0 var(--pad-x);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-bg);
+  }
+
+  .devlog-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    overflow: hidden;
+  }
+
+  .devlog-nav-logo {
+    font-family: var(--font-body);
+    font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+    white-space: nowrap;
+    transition: opacity 0.18s ease;
+  }
+
+  .devlog-nav-logo:hover {
+    opacity: 0.8;
+  }
+
+  .devlog-nav-logo:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .devlog-nav-dot {
+    color: var(--color-accent);
+  }
+
+  .devlog-nav-crumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    letter-spacing: 0.08em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .crumb-sep {
+    color: var(--color-rule-hair);
+    user-select: none;
+  }
+
+  .crumb-link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.18s ease;
+  }
+
+  .crumb-link:hover {
+    color: var(--color-accent);
+  }
+
+  .crumb-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .crumb-current {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .devlog-nav-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .devlog-theme-btn {
+    background: none;
+    border: 1px solid var(--color-rule-hair);
+    color: var(--color-text);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: border-color 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.18s ease,
+                transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .devlog-theme-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  .devlog-theme-btn:active {
+    transform: translateY(0);
+  }
+
+  .devlog-theme-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .theme-icon {
+    display: block;
+  }
+
+  .theme-icon-dark  { display: none; }
+  .theme-icon-light { display: block; }
+
+  :global(.dark) .theme-icon-light { display: none; }
+  :global(.dark) .theme-icon-dark  { display: block; }
+</style>

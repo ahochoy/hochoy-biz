@@ -26,10 +26,12 @@ pnpm-debug.log*
 .idea/
 
 # AI scratch
-"temporary screenshots"/
+temporary\ screenshots/
 brand-assets/
 CLAUDE.md
 .claude/
 screenshot.mjs
+phil.toml
+pnpm-workspace.yaml
 
 .vscode/
