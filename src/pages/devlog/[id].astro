@@ -1,0 +1,367 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DevlogNav from '../../components/DevlogNav.astro';
+import { getCollection, render } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('devlog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+  );
+
+  return posts.map((post, i) => {
+    const prevPost = i < posts.length - 1 ? posts[i + 1] : null;
+    const nextPost = i > 0 ? posts[i - 1] : null;
+
+    return {
+      params: { id: post.id },
+      props: { post, prevPost, nextPost },
+    };
+  });
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+const { Content } = await render(post);
+
+function formatDate(d: Date): string {
+  return d.toLocaleDateString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<BaseLayout
+  title={`${post.data.title} — Devlog | Andrew HoChoy`}
+  description={post.data.description}
+>
+  <DevlogNav
+    breadcrumbs={[
+      { label: 'DEVLOG', href: '/devlog' },
+      { label: post.id.toUpperCase() },
+    ]}
+  />
+
+  <article class="article">
+    <header class="article-header">
+      <div class="article-meta">
+        <a href="/devlog" class="article-back">
+          <span aria-hidden="true">←</span> All devlog entries
+        </a>
+        <time datetime={post.data.pubDate.toISOString()} class="eyebrow article-date">
+          {formatDate(post.data.pubDate)}
+        </time>
+      </div>
+
+      <h1 class="article-title">{post.data.title}</h1>
+
+      {post.data.description && (
+        <p class="article-lead">{post.data.description}</p>
+      )}
+
+      {post.data.tags.length > 0 && (
+        <div class="article-tags">
+          {post.data.tags.map(tag => (
+            <span class="article-tag">#{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="article-body prose">
+      <Content />
+    </div>
+
+    <footer class="article-footer">
+      <div class="article-nav">
+        {prevPost ? (
+          <a href={`/devlog/${prevPost.id}`} class="article-nav-link article-nav-link--prev">
+            <span class="eyebrow article-nav-label">← Previous Entry</span>
+            <span class="article-nav-title">{prevPost.data.title}</span>
+          </a>
+        ) : <div />}
+
+        {nextPost ? (
+          <a href={`/devlog/${nextPost.id}`} class="article-nav-link article-nav-link--next">
+            <span class="eyebrow article-nav-label">Next Entry →</span>
+            <span class="article-nav-title">{nextPost.data.title}</span>
+          </a>
+        ) : <div />}
+      </div>
+
+      <div class="article-footer-cta">
+        <a href="/devlog" class="article-footer-btn">
+          View full build log
+        </a>
+      </div>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .article {
+    background: var(--color-bg);
+  }
+
+  .article-header {
+    padding: var(--space-xl) var(--pad-x) var(--space-lg);
+    border-bottom: 1px solid var(--color-rule);
+    max-width: 90ch;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .article-back {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .article-back:hover {
+    opacity: 0.8;
+    transform: translateX(-2px);
+  }
+
+  .article-back:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .article-date {
+    color: var(--color-text-muted);
+    letter-spacing: 0.14em;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .article-lead {
+    font-family: var(--font-body);
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    margin-top: var(--space-md);
+    text-wrap: pretty;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--space-md);
+  }
+
+  .article-tag {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-rule-hair);
+    padding: 0.2em 0.6em;
+  }
+
+  /* ── Prose Styling ──────────────────────────────────────── */
+  .article-body {
+    padding: var(--space-xl) var(--pad-x);
+    max-width: 80ch;
+    font-size: clamp(1rem, 1.15vw, 1.125rem);
+    line-height: 1.7;
+    color: var(--color-body);
+  }
+
+  .prose :global(p) {
+    margin-bottom: var(--space-md);
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--color-rule-hair);
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-xs);
+  }
+
+  .prose :global(ul), .prose :global(ol) {
+    margin-bottom: var(--space-md);
+    padding-left: 1.5rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(li::marker) {
+    color: var(--color-accent);
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-accent);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-surface);
+    margin: var(--space-md) 0;
+    font-style: italic;
+    color: var(--color-text);
+  }
+
+  .prose :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.18s ease;
+  }
+
+  .prose :global(a:hover) {
+    opacity: 0.8;
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule-hair);
+    padding: 0.15em 0.4em;
+  }
+
+  .prose :global(pre) {
+    font-family: var(--font-mono);
+    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
+    line-height: 1.55;
+    padding: var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    overflow-x: auto;
+    margin: var(--space-lg) 0;
+  }
+
+  .prose :global(pre code) {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-rule-hair);
+    margin: var(--space-xl) 0;
+  }
+
+  /* ── Article Footer ─────────────────────────────────────── */
+  .article-footer {
+    border-top: 1px solid var(--color-rule);
+    padding: var(--space-lg) var(--pad-x) var(--space-xl);
+  }
+
+  .article-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+
+  .article-nav-link {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-md);
+    border: 1px solid var(--color-rule-hair);
+    text-decoration: none;
+    background: var(--color-surface);
+    transition: border-color 0.18s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .article-nav-link:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .article-nav-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .article-nav-link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .article-nav-label {
+    color: var(--color-accent);
+    margin-bottom: 0.35rem;
+  }
+
+  .article-nav-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--color-text);
+    line-height: 1.25;
+  }
+
+  .article-footer-cta {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-md);
+  }
+
+  .article-footer-btn {
+    display: inline-block;
+    padding: 0.85em 1.35em;
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    border: 1px solid var(--color-rule);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(0.8125rem, 1vw, 0.9375rem);
+    text-decoration: none;
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease;
+  }
+
+  .article-footer-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+  }
+
+  .article-footer-btn:active {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  .article-footer-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+</style>

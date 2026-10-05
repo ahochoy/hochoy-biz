@@ -1,0 +1,277 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DevlogNav from '../../components/DevlogNav.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+const posts = (await getCollection('devlog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+function formatDate(d: Date): string {
+  return d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  }).toUpperCase();
+}
+---
+
+<BaseLayout
+  title="Devlog — Andrew HoChoy"
+  description="A running build log of technical experiments, architecture decisions, and notes from shipping software solo."
+>
+  <DevlogNav breadcrumbs={[{ label: 'DEVLOG' }]} />
+
+  <header class="devlog-header">
+    <div class="devlog-header-inner">
+      <p class="eyebrow devlog-eyebrow">Engineering / Build Log</p>
+      <h1 class="devlog-title">Dispatches from the workbench<span class="devlog-period">.</span></h1>
+      <p class="devlog-lede">
+        Raw notes, micro-decisions, and discoveries from the day-to-day work of prototyping AI systems and building production software.
+      </p>
+    </div>
+  </header>
+
+  <main class="devlog-list-wrap">
+    <div class="devlog-list-bar">
+      <span class="eyebrow devlog-count">
+        {posts.length} {posts.length === 1 ? 'Entry' : 'Entries'}
+      </span>
+      <span class="eyebrow devlog-sort">Sorted: Most Recent First</span>
+    </div>
+
+    {posts.length === 0 ? (
+      <div class="devlog-empty">
+        <p class="devlog-empty-msg">No entries published yet. First log coming soon.</p>
+      </div>
+    ) : (
+      <div class="devlog-feed">
+        {posts.map((post, idx) => (
+          <a href={`/devlog/${post.id}`} class="devlog-item">
+            <div class="devlog-item-meta">
+              <span class="devlog-item-num" aria-hidden="true">{String(posts.length - idx).padStart(2, '0')}</span>
+              <time datetime={post.data.pubDate.toISOString()} class="devlog-item-date">
+                {formatDate(post.data.pubDate)}
+              </time>
+            </div>
+
+            <div class="devlog-item-body">
+              <h2 class="devlog-item-title">{post.data.title}</h2>
+              {post.data.description && (
+                <p class="devlog-item-desc">{post.data.description}</p>
+              )}
+              {post.data.tags.length > 0 && (
+                <div class="devlog-item-tags">
+                  {post.data.tags.map(tag => (
+                    <span class="devlog-tag">#{tag}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class="devlog-item-action" aria-hidden="true">
+              <span class="devlog-item-arrow">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .devlog-header {
+    padding: var(--space-xl) var(--pad-x) var(--space-lg);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-bg);
+  }
+
+  .devlog-header-inner {
+    max-width: 72ch;
+  }
+
+  .devlog-eyebrow {
+    color: var(--color-accent);
+    margin-bottom: var(--space-sm);
+  }
+
+  .devlog-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+
+  .devlog-period {
+    color: var(--color-accent);
+  }
+
+  .devlog-lede {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--color-body);
+    margin-top: var(--space-md);
+    text-wrap: pretty;
+  }
+
+  .devlog-list-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--pad-x);
+    height: 2.75rem;
+    border-bottom: 1px solid var(--color-rule-hair);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+  }
+
+  .devlog-count {
+    letter-spacing: 0.16em;
+  }
+
+  .devlog-sort {
+    letter-spacing: 0.12em;
+  }
+
+  .devlog-feed {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .devlog-item {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--space-md) var(--space-lg);
+    padding: var(--space-md) var(--pad-x);
+    border-bottom: 1px solid var(--color-rule-hair);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.18s ease;
+  }
+
+  .devlog-item:last-child {
+    border-bottom: none;
+  }
+
+  .devlog-item:hover {
+    background: var(--color-surface);
+  }
+
+  .devlog-item:hover .devlog-item-arrow {
+    transform: translateX(4px);
+    color: var(--color-accent);
+  }
+
+  .devlog-item:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
+  .devlog-item-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .devlog-item-num {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    font-weight: 500;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+  }
+
+  .devlog-item-date {
+    font-family: var(--font-mono);
+    font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .devlog-item-body {
+    min-width: 0;
+  }
+
+  .devlog-item-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    transition: color 0.18s ease;
+  }
+
+  .devlog-item:hover .devlog-item-title {
+    color: var(--color-accent);
+  }
+
+  .devlog-item-desc {
+    font-family: var(--font-body);
+    font-size: clamp(0.875rem, 1vw, 0.9375rem);
+    line-height: 1.5;
+    color: var(--color-body);
+    margin-top: 0.35rem;
+    max-width: 65ch;
+  }
+
+  .devlog-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+  }
+
+  .devlog-tag {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-rule-hair);
+    padding: 0.15em 0.5em;
+  }
+
+  .devlog-item-action {
+    display: flex;
+    align-items: center;
+    padding-top: 0.25rem;
+  }
+
+  .devlog-item-arrow {
+    font-size: 1.125rem;
+    color: var(--color-rule-hair);
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), color 0.18s ease;
+  }
+
+  .devlog-empty {
+    padding: var(--space-xl) var(--pad-x);
+    text-align: center;
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  @media (max-width: 768px) {
+    .devlog-item {
+      grid-template-columns: 1fr auto;
+      gap: var(--space-sm);
+    }
+
+    .devlog-item-meta {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .devlog-list-bar {
+      font-size: 0.7rem;
+    }
+  }
+</style>

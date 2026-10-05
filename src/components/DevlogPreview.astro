@@ -1,0 +1,280 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('devlog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+const latestPost = allPosts[0];
+const previousPosts = allPosts.slice(1, 3);
+
+function formatDate(d: Date): string {
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  }).toUpperCase();
+}
+---
+
+<div class="dl-prev">
+  <div class="dl-prev-top">
+    <div class="dl-prev-header">
+      <span class="eyebrow dl-prev-label">Devlog // Build Log</span>
+      <span class="eyebrow dl-prev-status">[LIVE]</span>
+    </div>
+
+    {latestPost ? (
+      <div class="dl-prev-featured">
+        <div class="dl-prev-meta">
+          <time datetime={latestPost.data.pubDate.toISOString()} class="dl-prev-date">
+            {formatDate(latestPost.data.pubDate)}
+          </time>
+          {latestPost.data.tags.length > 0 && (
+            <span class="dl-prev-tag">#{latestPost.data.tags[0]}</span>
+          )}
+        </div>
+
+        <a href={`/devlog/${latestPost.id}`} class="dl-prev-title-wrap">
+          <h3 class="dl-prev-title">{latestPost.data.title}</h3>
+          <span class="dl-prev-arrow" aria-hidden="true">→</span>
+        </a>
+
+        {latestPost.data.description && (
+          <p class="dl-prev-desc">{latestPost.data.description}</p>
+        )}
+      </div>
+    ) : (
+      <p class="dl-prev-desc">Entries coming soon.</p>
+    )}
+
+    {previousPosts.length > 0 && (
+      <div class="dl-prev-history">
+        <span class="eyebrow dl-prev-history-label">Previous notes</span>
+        <ul class="dl-prev-history-list">
+          {previousPosts.map(post => (
+            <li>
+              <a href={`/devlog/${post.id}`} class="dl-prev-history-link">
+                <span class="dl-prev-history-date">{formatDate(post.data.pubDate)}</span>
+                <span class="dl-prev-history-title">{post.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+
+  <div class="dl-prev-actions">
+    <a href="/devlog" class="dl-btn">
+      All entries ({allPosts.length}) <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</div>
+
+<style>
+  .dl-prev {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: var(--space-lg) var(--pad-x) var(--space-lg) var(--space-lg);
+    gap: var(--space-md);
+  }
+
+  .dl-prev-top {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dl-prev-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+  }
+
+  .dl-prev-label {
+    color: var(--color-accent);
+    letter-spacing: 0.16em;
+  }
+
+  .dl-prev-status {
+    color: var(--color-text-muted);
+    letter-spacing: 0.12em;
+    font-size: var(--label-size);
+  }
+
+  .dl-prev-featured {
+    margin-top: 0.25rem;
+  }
+
+  .dl-prev-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .dl-prev-date {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .dl-prev-tag {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+  }
+
+  .dl-prev-title-wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    margin-top: 0.2rem;
+  }
+
+  .dl-prev-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    transition: color 0.18s ease;
+  }
+
+  .dl-prev-title-wrap:hover .dl-prev-title {
+    color: var(--color-accent);
+  }
+
+  .dl-prev-arrow {
+    font-size: 1rem;
+    color: var(--color-accent);
+    flex: none;
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dl-prev-title-wrap:hover .dl-prev-arrow {
+    transform: translateX(3px);
+  }
+
+  .dl-prev-title-wrap:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .dl-prev-desc {
+    margin-top: 0.45rem;
+    font-family: var(--font-body);
+    font-size: clamp(0.8125rem, 0.95vw, 0.875rem);
+    line-height: 1.45;
+    color: var(--color-body);
+    text-wrap: pretty;
+    max-width: 48ch;
+  }
+
+  /* ── Previous notes ─────────────────────────────────────── */
+  .dl-prev-history {
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--color-rule-hair);
+  }
+
+  .dl-prev-history-label {
+    display: block;
+    color: var(--color-text-muted);
+    margin-bottom: 0.35rem;
+    font-size: calc(var(--label-size) * 0.9);
+  }
+
+  .dl-prev-history-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .dl-prev-history-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: inherit;
+    font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+    transition: color 0.18s ease;
+  }
+
+  .dl-prev-history-date {
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+    font-size: calc(var(--label-size) * 0.9);
+    flex: none;
+  }
+
+  .dl-prev-history-title {
+    color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.18s ease;
+  }
+
+  .dl-prev-history-link:hover .dl-prev-history-title {
+    color: var(--color-accent);
+  }
+
+  .dl-prev-history-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* ── Action button ──────────────────────────────────────── */
+  .dl-prev-actions {
+    margin-top: var(--space-sm);
+  }
+
+  .dl-btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(0.8125rem, 1vw, 0.875rem);
+    line-height: 1;
+    padding: 0.85em 1.15em;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid var(--color-rule);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.18s ease,
+                background 0.18s ease;
+  }
+
+  .dl-btn:hover {
+    transform: translateY(-2px);
+    background: var(--color-surface);
+  }
+
+  .dl-btn:active {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  .dl-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 860px) {
+    .dl-prev {
+      padding: var(--space-lg) var(--pad-x);
+    }
+  }
+</style>
