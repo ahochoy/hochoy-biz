@@ -275,6 +275,43 @@ function formatDate(d: Date): string {
     padding: 0;
   }
 
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin: var(--space-md) 0 var(--space-lg);
+    border: 1px solid var(--color-rule);
+  }
+
+  .prose :global(th), .prose :global(td) {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--color-rule-hair);
+  }
+
+  .prose :global(th) {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
+
+  .prose :global(tr:last-child td) {
+    border-bottom: none;
+  }
+
+  @media (max-width: 640px) {
+    .prose :global(table) {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+
   .prose :global(hr) {
     border: none;
     border-top: 1px solid var(--color-rule-hair);
