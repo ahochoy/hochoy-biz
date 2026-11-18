@@ -4,24 +4,23 @@ import projects from '../data/ai-projects.json';
 
 <div class="ai-grid">
   {projects.map((project, i) => (
-    <a
-      href={project.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="ai-card"
-      data-id={project.id}
-    >
+    <article class="ai-card" data-id={project.id}>
       <div class="ai-card-main">
         <div class="ai-card-meta">
           <span class="ai-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-          {project.isPrivate ? (
-            <span class="ai-badge ai-badge--private">{project.badge}</span>
-          ) : (
-            <span class="ai-badge ai-badge--public">Public</span>
-          )}
+          <span class:list={["ai-badge", project.isPrivate ? "ai-badge--private" : "ai-badge--public"]}>
+            {project.isPrivate ? 'Private' : 'Public'}
+          </span>
         </div>
 
-        <h3 class="ai-title">{project.name}</h3>
+        <a
+          href={project.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ai-title-link"
+        >
+          <h3 class="ai-title">{project.name}</h3>
+        </a>
 
         <ul class="ai-tags" aria-label={`${project.name} technologies`}>
           {project.tags.map((tag) => (
@@ -33,11 +32,30 @@ import projects from '../data/ai-projects.json';
       </div>
 
       <div class="ai-card-footer">
-        <span class="ai-cta">
-          {project.ctaLabel} <span class="ai-arrow" aria-hidden="true">→</span>
-        </span>
+        <div class="ai-actions">
+          <a
+            href={project.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ai-btn ai-btn--primary"
+          >
+            {project.ctaLabel} <span class="ai-arrow" aria-hidden="true">→</span>
+          </a>
+          <a
+            href={project.githubHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ai-btn ai-btn--ghost"
+          >
+            GitHub <span class="ai-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        {project.privateNote && (
+          <p class="ai-private-note">{project.privateNote}</p>
+        )}
       </div>
-    </a>
+    </article>
   ))}
 </div>
 
@@ -58,8 +76,6 @@ import projects from '../data/ai-projects.json';
     gap: var(--space-md);
     background: var(--color-bg);
     padding: var(--ai-pad);
-    text-decoration: none;
-    color: inherit;
     transition: background-color 0.18s ease;
   }
 
@@ -75,32 +91,6 @@ import projects from '../data/ai-projects.json';
 
   .ai-card:hover {
     background: var(--color-surface);
-  }
-
-  .ai-card:hover .ai-title {
-    color: var(--color-accent);
-  }
-
-  .ai-card:hover .ai-cta {
-    transform: translateY(-2px);
-  }
-
-  .ai-card:hover .ai-arrow {
-    transform: translateX(3px);
-  }
-
-  .ai-card:active .ai-cta {
-    transform: translateY(0);
-    opacity: 0.85;
-  }
-
-  .ai-card:active .ai-arrow {
-    transform: translateX(1px);
-  }
-
-  .ai-card:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: -2px;
   }
 
   .ai-card-main {
@@ -128,9 +118,9 @@ import projects from '../data/ai-projects.json';
     font-family: var(--font-mono);
     font-size: calc(var(--label-size) * 0.92);
     font-weight: 500;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    line-height: 1.3;
+    line-height: 1.2;
     padding: 0.3em 0.55em;
     border: 1px solid var(--color-rule-hair);
   }
@@ -143,6 +133,22 @@ import projects from '../data/ai-projects.json';
 
   .ai-badge--public {
     color: var(--color-text-muted);
+  }
+
+  .ai-title-link {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    align-self: flex-start;
+  }
+
+  .ai-title-link:hover .ai-title {
+    color: var(--color-accent);
+  }
+
+  .ai-title-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
 
   .ai-title {
@@ -185,9 +191,18 @@ import projects from '../data/ai-projects.json';
     margin-top: var(--space-xs);
     padding-top: var(--space-sm);
     border-top: 1px solid var(--color-rule-hair);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
   }
 
-  .ai-cta {
+  .ai-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .ai-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
@@ -195,16 +210,59 @@ import projects from '../data/ai-projects.json';
     font-weight: 500;
     font-size: clamp(0.8125rem, 1vw, 0.875rem);
     line-height: 1;
-    padding: 0.8em 1.1em;
-    border: 1px solid var(--color-rule);
-    color: var(--color-text);
+    padding: 0.8em 1.05em;
+    border: 1px solid transparent;
+    text-decoration: none;
     transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
                 opacity 0.18s ease;
   }
 
+  .ai-btn--primary {
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+  }
+
+  .ai-btn--ghost {
+    border-color: var(--color-rule);
+    color: var(--color-text);
+  }
+
+  .ai-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .ai-btn:hover .ai-arrow {
+    transform: translateX(3px);
+  }
+
+  .ai-btn:active {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  .ai-btn:active .ai-arrow {
+    transform: translateX(1px);
+  }
+
+  .ai-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
   .ai-arrow {
-    color: var(--color-accent);
     transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ai-btn--ghost .ai-arrow {
+    color: var(--color-accent);
+  }
+
+  .ai-private-note {
+    font-family: var(--font-mono);
+    font-size: calc(var(--label-size) * 0.95);
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: var(--color-text-muted);
   }
 
   @media (max-width: 960px) {

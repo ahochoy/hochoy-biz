@@ -11,6 +11,7 @@
       "Benchmarking"
     ],
     "href": "https://phil-development.hochoy.dev",
+    "githubHref": "https://github.com/ahochoy/phil",
     "ctaLabel": "Launch project",
     "isPrivate": false
   },
@@ -29,9 +30,10 @@
       "Evals"
     ],
     "href": "https://phoebe-onboarding.hochoy.dev",
+    "githubHref": "https://github.com/ahochoy/phoebe-onboarding",
     "ctaLabel": "Launch project",
     "isPrivate": true,
-    "badge": "Private · Password protected — contact me for password"
+    "privateNote": "Password protected. Contact me for password."
   },
   {
     "id": "phineas-finance",
@@ -44,8 +46,9 @@
       "Docker"
     ],
     "href": "https://phineas-finance.hochoy.dev",
+    "githubHref": "https://github.com/ahochoy/phineas",
     "ctaLabel": "Launch project",
     "isPrivate": true,
-    "badge": "Private · Password protected — contact me for password"
+    "privateNote": "Password protected. Contact me for password."
   }
 ]

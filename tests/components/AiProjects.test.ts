@@ -5,7 +5,7 @@ import AiProjects from '../../src/components/AiProjects.astro';
 import projects from '../../src/data/ai-projects.json';
 
 describe('<AiProjects />', () => {
-  it('renders all 3 AI projects with tags, CTA, and private badges', async () => {
+  it('renders all 3 AI projects with tags, project & GitHub CTAs, and private badges/notes', async () => {
     const container = await AstroContainer.create();
     const html = await container.renderToString(AiProjects);
     const $ = cheerio.load(html);
@@ -16,11 +16,18 @@ describe('<AiProjects />', () => {
     projects.forEach((project, i) => {
       const card = cards.eq(i);
       expect(card.attr('data-id')).toBe(project.id);
-      expect(card.attr('href')).toBe(project.href);
-      expect(card.attr('target')).toBe('_blank');
       expect(card.find('.ai-title').text().trim()).toBe(project.name);
       expect(card.find('.ai-desc').text().trim()).toBe(project.description);
-      expect(card.find('.ai-cta').text()).toContain(project.ctaLabel);
+
+      const primaryBtn = card.find('.ai-btn--primary');
+      expect(primaryBtn.attr('href')).toBe(project.href);
+      expect(primaryBtn.attr('target')).toBe('_blank');
+      expect(primaryBtn.text()).toContain(project.ctaLabel);
+
+      const githubBtn = card.find('.ai-btn--ghost');
+      expect(githubBtn.attr('href')).toBe(project.githubHref);
+      expect(githubBtn.attr('target')).toBe('_blank');
+      expect(githubBtn.text()).toContain('GitHub');
 
       const renderedTags = card
         .find('.ai-tag')
@@ -29,9 +36,11 @@ describe('<AiProjects />', () => {
       expect(renderedTags).toEqual(project.tags);
 
       if (project.isPrivate) {
-        expect(card.find('.ai-badge--private').text().trim()).toBe(project.badge);
+        expect(card.find('.ai-badge--private').text().trim()).toBe('Private');
+        expect(card.find('.ai-private-note').text().trim()).toBe(project.privateNote);
       } else {
         expect(card.find('.ai-badge--public').text().trim()).toBe('Public');
+        expect(card.find('.ai-private-note').length).toBe(0);
       }
     });
   });
