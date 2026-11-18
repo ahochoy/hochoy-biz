@@ -127,9 +127,10 @@ describe('Data Integrity Smoke Tests', () => {
       description: z.string().min(1),
       tags: z.array(z.string().min(1)).min(1),
       href: z.string().url(),
+      githubHref: z.string().url(),
       ctaLabel: z.string().min(1),
       isPrivate: z.boolean(),
-      badge: z.string().min(1).optional(),
+      privateNote: z.string().min(1).optional(),
     });
 
     const parsed = z.array(AiProjectSchema).safeParse(aiProjects);
