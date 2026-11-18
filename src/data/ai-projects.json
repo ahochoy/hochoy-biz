@@ -1,0 +1,51 @@
+[
+  {
+    "id": "phil",
+    "name": "Phil",
+    "description": "A bring-your-own-key development agent terminal CLI tool with built-in benchmarking.",
+    "tags": [
+      "LangGraph",
+      "LangChain",
+      "CLI",
+      "BYOK",
+      "Benchmarking"
+    ],
+    "href": "https://phil-development.hochoy.dev",
+    "ctaLabel": "Launch project",
+    "isPrivate": false
+  },
+  {
+    "id": "phoebe-onboarding",
+    "name": "Phoebe Onboarding",
+    "description": "An onboarding RAG agentic tool with built-in evaluations, deployed on AWS and Cloudflare.",
+    "tags": [
+      "RAG",
+      "AWS Lambda",
+      "Amazon Bedrock",
+      "CloudFront",
+      "Cloudflare",
+      "Terraform",
+      "Docker",
+      "Evals"
+    ],
+    "href": "https://phoebe-onboarding.hochoy.dev",
+    "ctaLabel": "Launch project",
+    "isPrivate": true,
+    "badge": "Private · Password protected — contact me for password"
+  },
+  {
+    "id": "phineas-finance",
+    "name": "Phineas Finance",
+    "description": "A secure financial analysis agentic tool built for enterprise-grade workflows.",
+    "tags": [
+      "Amazon Bedrock",
+      "AgentCore",
+      "Terraform",
+      "Docker"
+    ],
+    "href": "https://phineas-finance.hochoy.dev",
+    "ctaLabel": "Launch project",
+    "isPrivate": true,
+    "badge": "Private · Password protected — contact me for password"
+  }
+]

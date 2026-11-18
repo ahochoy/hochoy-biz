@@ -1,0 +1,222 @@
+---
+import projects from '../data/ai-projects.json';
+---
+
+<div class="ai-grid">
+  {projects.map((project, i) => (
+    <a
+      href={project.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="ai-card"
+      data-id={project.id}
+    >
+      <div class="ai-card-main">
+        <div class="ai-card-meta">
+          <span class="ai-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          {project.isPrivate ? (
+            <span class="ai-badge ai-badge--private">{project.badge}</span>
+          ) : (
+            <span class="ai-badge ai-badge--public">Public</span>
+          )}
+        </div>
+
+        <h3 class="ai-title">{project.name}</h3>
+
+        <ul class="ai-tags" aria-label={`${project.name} technologies`}>
+          {project.tags.map((tag) => (
+            <li class="ai-tag">{tag}</li>
+          ))}
+        </ul>
+
+        <p class="ai-desc">{project.description}</p>
+      </div>
+
+      <div class="ai-card-footer">
+        <span class="ai-cta">
+          {project.ctaLabel} <span class="ai-arrow" aria-hidden="true">→</span>
+        </span>
+      </div>
+    </a>
+  ))}
+</div>
+
+<style>
+  /* 3-column grid floating on a hairline ground so 1px gaps read as printed rules. */
+  .ai-grid {
+    --ai-pad: clamp(1.125rem, 2.25vw, 1.75rem);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-rule-hair);
+  }
+
+  .ai-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-md);
+    background: var(--color-bg);
+    padding: var(--ai-pad);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.18s ease;
+  }
+
+  /* Edge columns carry the page gutter so cell text lines up with every
+     other section, while the 1px rules still run full-bleed. */
+  .ai-card:nth-child(3n + 1) {
+    padding-left: var(--pad-x);
+  }
+
+  .ai-card:nth-child(3n) {
+    padding-right: var(--pad-x);
+  }
+
+  .ai-card:hover {
+    background: var(--color-surface);
+  }
+
+  .ai-card:hover .ai-title {
+    color: var(--color-accent);
+  }
+
+  .ai-card:hover .ai-cta {
+    transform: translateY(-2px);
+  }
+
+  .ai-card:hover .ai-arrow {
+    transform: translateX(3px);
+  }
+
+  .ai-card:active .ai-cta {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  .ai-card:active .ai-arrow {
+    transform: translateX(1px);
+  }
+
+  .ai-card:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
+  .ai-card-main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .ai-num {
+    font-family: var(--font-mono);
+    font-size: var(--label-size);
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+
+  .ai-badge {
+    font-family: var(--font-mono);
+    font-size: calc(var(--label-size) * 0.92);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    padding: 0.3em 0.55em;
+    border: 1px solid var(--color-rule-hair);
+  }
+
+  .ai-badge--private {
+    color: var(--color-text);
+    background: var(--color-surface);
+    border-color: var(--color-rule);
+  }
+
+  .ai-badge--public {
+    color: var(--color-text-muted);
+  }
+
+  .ai-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.375rem, 2.2vw, 1.85rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    transition: color 0.18s ease;
+  }
+
+  .ai-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.65rem;
+  }
+
+  .ai-tag {
+    font-family: var(--font-mono);
+    font-size: calc(var(--label-size) * 0.95);
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    color: var(--color-accent);
+    border: 1px solid var(--color-rule-hair);
+    padding: 0.25em 0.5em;
+  }
+
+  .ai-desc {
+    margin-top: 0.75rem;
+    font-size: clamp(0.875rem, 1vw, 0.9375rem);
+    line-height: 1.55;
+    color: var(--color-body);
+    text-wrap: pretty;
+  }
+
+  .ai-card-footer {
+    margin-top: var(--space-xs);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--color-rule-hair);
+  }
+
+  .ai-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(0.8125rem, 1vw, 0.875rem);
+    line-height: 1;
+    padding: 0.8em 1.1em;
+    border: 1px solid var(--color-rule);
+    color: var(--color-text);
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.18s ease;
+  }
+
+  .ai-arrow {
+    color: var(--color-accent);
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (max-width: 960px) {
+    .ai-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-card,
+    .ai-card:nth-child(3n + 1),
+    .ai-card:nth-child(3n) {
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+  }
+</style>

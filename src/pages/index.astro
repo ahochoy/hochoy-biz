@@ -10,6 +10,7 @@ import Newsletter from '../components/Newsletter.astro';
 import DevlogPreview from '../components/DevlogPreview.astro';
 import Householder from '../components/Householder.astro';
 import Currently from '../components/Currently.astro';
+import AiProjects from '../components/AiProjects.astro';
 
 import ctaData from '../data/cta.json';
 import connectData from '../data/connect.json';
@@ -44,15 +45,16 @@ const showCta = false;
       </Section>
     )}
 
-    <Section title="Connect" collapsible={true} defaultOpen={true}>
-      {connectData.map((item, i) => (
-        <Card
-          index={i + 1}
-          title={item.title}
-          description={item.description}
-          href={item.href}
-        />
-      ))}
+    <Section title="Capabilities" collapsible={true} defaultOpen={true}>
+      <BentoGrid />
+    </Section>
+
+    <Section title="Companies I've Worked With" layout="inline" collapsible={false}>
+      <CompanyLogos />
+    </Section>
+
+    <Section title="AI Projects" collapsible={true} defaultOpen={true}>
+      <AiProjects />
     </Section>
 
     <Section title="Content" collapsible={true} defaultOpen={true}>
@@ -66,12 +68,15 @@ const showCta = false;
       </div>
     </Section>
 
-    <Section title="Capabilities" collapsible={true} defaultOpen={true}>
-      <BentoGrid />
-    </Section>
-
-    <Section title="Companies I've Worked With" layout="inline" collapsible={false}>
-      <CompanyLogos />
+    <Section title="Connect" collapsible={true} defaultOpen={true}>
+      {connectData.map((item, i) => (
+        <Card
+          index={i + 1}
+          title={item.title}
+          description={item.description}
+          href={item.href}
+        />
+      ))}
     </Section>
 
     <Householder />

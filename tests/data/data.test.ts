@@ -9,6 +9,7 @@ import content from '../../src/data/content.json';
 import cta from '../../src/data/cta.json';
 import householder from '../../src/data/householder.json';
 import currently from '../../src/data/currently.json';
+import aiProjects from '../../src/data/ai-projects.json';
 
 describe('Data Integrity Smoke Tests', () => {
   it('capabilities.json contains valid items', () => {
@@ -117,5 +118,22 @@ describe('Data Integrity Smoke Tests', () => {
 
     const parsed = CurrentlySchema.safeParse(currently);
     expect(parsed.success).toBe(true);
+  });
+
+  it('ai-projects.json contains valid AI project entries', () => {
+    const AiProjectSchema = z.object({
+      id: z.string().min(1),
+      name: z.string().min(1),
+      description: z.string().min(1),
+      tags: z.array(z.string().min(1)).min(1),
+      href: z.string().url(),
+      ctaLabel: z.string().min(1),
+      isPrivate: z.boolean(),
+      badge: z.string().min(1).optional(),
+    });
+
+    const parsed = z.array(AiProjectSchema).safeParse(aiProjects);
+    expect(parsed.success).toBe(true);
+    expect(aiProjects.length).toBe(3);
   });
 });
