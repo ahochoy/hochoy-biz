@@ -1,9 +1,10 @@
 [
   {
     "id": "phil",
-    "name": "Phil",
+    "name": "Phil Coding",
     "description": "A bring-your-own-key development agent terminal CLI tool with built-in benchmarking.",
     "tags": [
+      "Python",
       "LangGraph",
       "LangChain",
       "CLI",
@@ -40,6 +41,7 @@
     "name": "Phineas Finance",
     "description": "A secure financial analysis agentic tool built for enterprise-grade workflows.",
     "tags": [
+      "Python",
       "Amazon Bedrock",
       "AgentCore",
       "Terraform",
