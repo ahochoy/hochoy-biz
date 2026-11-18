@@ -14,11 +14,28 @@ describe('Page: index.astro', () => {
 
     // Key content sections
     expect($('#section-currently').length).toBe(1);
-    expect($('#section-connect').length).toBe(1);
-    expect($('#section-content').length).toBe(1);
     expect($('#section-capabilities').length).toBe(1);
     expect($('#section-companies-i-ve-worked-with').length).toBe(1);
+    expect($('#section-ai-projects').length).toBe(1);
+    expect($('#section-content').length).toBe(1);
+    expect($('#section-connect').length).toBe(1);
     expect($('section.hh').length).toBe(1);
     expect($('#section-contact').length).toBe(1);
+
+    // Verify section order in <main>
+    const sectionOrder = $('main > section')
+      .map((_, el) => $(el).attr('id') || ($(el).hasClass('hh') ? 'householder' : ''))
+      .get();
+
+    expect(sectionOrder).toEqual([
+      'section-currently',
+      'section-capabilities',
+      'section-companies-i-ve-worked-with',
+      'section-ai-projects',
+      'section-content',
+      'section-connect',
+      'householder',
+      'section-contact',
+    ]);
   });
 });
