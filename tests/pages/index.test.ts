@@ -29,12 +29,12 @@ describe('Page: index.astro', () => {
 
     expect(sectionOrder).toEqual([
       'section-currently',
+      'section-ai-projects',
       'section-capabilities',
       'section-companies-i-ve-worked-with',
-      'section-ai-projects',
-      'section-content',
-      'section-connect',
       'householder',
+      'section-connect',
+      'section-content',
       'section-contact',
     ]);
   });
