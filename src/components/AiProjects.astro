@@ -32,6 +32,10 @@ import projects from '../data/ai-projects.json';
       </div>
 
       <div class="ai-card-footer">
+        {project.privateNote && (
+          <p class="ai-private-note">{project.privateNote}</p>
+        )}
+
         <div class="ai-actions">
           <a
             href={project.href}
@@ -50,10 +54,6 @@ import projects from '../data/ai-projects.json';
             GitHub <span class="ai-arrow" aria-hidden="true">→</span>
           </a>
         </div>
-
-        {project.privateNote && (
-          <p class="ai-private-note">{project.privateNote}</p>
-        )}
       </div>
     </article>
   ))}
@@ -123,15 +123,6 @@ import projects from '../data/ai-projects.json';
     line-height: 1.2;
     padding: 0.3em 0.55em;
     border: 1px solid var(--color-rule-hair);
-  }
-
-  .ai-badge--private {
-    color: var(--color-text);
-    background: var(--color-surface);
-    border-color: var(--color-rule);
-  }
-
-  .ai-badge--public {
     color: var(--color-text-muted);
   }
 
