@@ -49,6 +49,8 @@ const showCta = false;
       <AiProjects />
     </Section>
 
+    <Householder />
+
     <Section title="Capabilities" collapsible={true} defaultOpen={true}>
       <BentoGrid />
     </Section>
@@ -56,8 +58,6 @@ const showCta = false;
     <Section title="Companies I've Worked With" layout="inline" collapsible={false}>
       <CompanyLogos />
     </Section>
-
-    <Householder />
 
     <Section title="Connect" collapsible={true} defaultOpen={true}>
       {connectData.map((item, i) => (

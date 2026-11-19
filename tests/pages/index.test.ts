@@ -30,9 +30,9 @@ describe('Page: index.astro', () => {
     expect(sectionOrder).toEqual([
       'section-currently',
       'section-ai-projects',
+      'householder',
       'section-capabilities',
       'section-companies-i-ve-worked-with',
-      'householder',
       'section-connect',
       'section-content',
       'section-contact',
