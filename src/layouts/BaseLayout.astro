@@ -257,12 +257,18 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         display: none;
       }
 
-      .window.is-maximized {
-        max-width: 100% !important;
-        width: 100% !important;
+      .window.is-minimized {
+        min-height: 0;
         height: auto !important;
-        transform: translate3d(0, 0, 0) !important;
-        box-shadow: none;
+      }
+
+      .window.is-minimized .window-bar {
+        border-bottom: none;
+      }
+
+      .window.is-minimized .window-content,
+      .window.is-minimized .window-resize {
+        display: none;
       }
 
       .window.is-height-locked .window-content {
@@ -505,8 +511,8 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
           type="button"
           class="window-ctl window-ctl--max"
           id="window-max-btn"
-          aria-label="Maximize or restore window"
-          title="Maximize / Restore window"
+          aria-label="Minimize or restore window"
+          title="Minimize / Restore window"
         >[↕]</button>
       </div>
 
@@ -548,7 +554,7 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         }
 
         function openWindow() {
-          win.classList.remove('is-closed', 'is-maximized', 'is-height-locked');
+          win.classList.remove('is-closed', 'is-minimized', 'is-height-locked');
           win.style.width = '';
           win.style.maxWidth = '';
           win.style.height = '';
@@ -560,22 +566,8 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
           win.classList.add('is-closed');
         }
 
-        function toggleMaximize() {
-          if (win.classList.contains('is-maximized')) {
-            win.classList.remove('is-maximized');
-          } else {
-            // If window was resized or moved, reset to centered default or toggle full maximize
-            const hasCustomSizeOrPos =
-              win.style.width !== '' ||
-              win.style.height !== '' ||
-              winX !== 0 ||
-              winY !== 0;
-            if (hasCustomSizeOrPos) {
-              openWindow();
-            } else {
-              win.classList.add('is-maximized');
-            }
-          }
+        function toggleMinimize() {
+          win.classList.toggle('is-minimized');
         }
 
         closeBtn?.addEventListener('click', (e) => {
@@ -585,12 +577,12 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
 
         maxBtn?.addEventListener('click', (e) => {
           e.stopPropagation();
-          toggleMaximize();
+          toggleMinimize();
         });
 
         titlebar.addEventListener('dblclick', (e) => {
           if (e.target.closest('.window-ctl')) return;
-          toggleMaximize();
+          toggleMinimize();
         });
 
         // Desktop file icon: single click selects, double-click opens window
@@ -633,9 +625,6 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
 
         titlebar.addEventListener('pointerdown', (e) => {
           if (e.button !== 0 || e.target.closest('.window-ctl')) return;
-          if (win.classList.contains('is-maximized')) {
-            win.classList.remove('is-maximized');
-          }
 
           titlebar.setPointerCapture(e.pointerId);
           dragState = {
