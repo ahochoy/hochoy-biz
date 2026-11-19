@@ -209,7 +209,7 @@ import NavStrip from './NavStrip.astro';
   .hero-name {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(3.25rem, 12vw, 9.5rem);
+    font-size: clamp(2.75rem, 11cqi, 9.5rem);
     line-height: 0.84;
     letter-spacing: -0.02em;
     color: var(--color-text);
@@ -259,6 +259,18 @@ import NavStrip from './NavStrip.astro';
   }
 
   @media (max-width: 640px) {
+    .hero-foot {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: clamp(1rem, 4vw, 1.5rem);
+    }
+
+    .hero-tagline {
+      flex: 1 1 auto;
+    }
+  }
+
+  @container window (max-width: 640px) {
     .hero-foot {
       flex-direction: column;
       align-items: flex-start;

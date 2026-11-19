@@ -225,4 +225,28 @@ import app from '../data/householder.json';
       background: linear-gradient(to bottom, var(--hh-bg) 55%, transparent 85%);
     }
   }
+
+  @container window (max-width: 640px) {
+    .hh {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .hh-phone {
+      justify-self: center;
+      width: min(100%, 16.25rem);
+      height: 17.5rem;
+    }
+
+    :global(.dark) .hh {
+      background:
+        radial-gradient(circle, rgba(123, 144, 255, 0.55) 1.1px, transparent 1.6px) 0 0 / 6px 6px,
+        radial-gradient(ellipse 90% 45% at 50% 100%, rgba(31, 63, 216, 0.85), transparent 70%),
+        var(--hh-bg);
+    }
+
+    :global(.dark) .hh::before {
+      background: linear-gradient(to bottom, var(--hh-bg) 55%, transparent 85%);
+    }
+  }
 </style>

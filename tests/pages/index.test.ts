@@ -12,6 +12,14 @@ describe('Page: index.astro', () => {
     // Hero section
     expect($('h1.hero-name').length).toBe(1);
 
+    // Desktop icon and interactive browser window controls
+    expect($('#desktop-icon-index').length).toBe(1);
+    expect($('#desktop-icon-index .desktop-icon-label').text().trim()).toBe('index.html');
+    expect($('#browser-window').length).toBe(1);
+    expect($('#window-close-btn').length).toBe(1);
+    expect($('#window-max-btn').length).toBe(1);
+    expect($('#browser-window [data-resize]').length).toBe(5);
+
     // Key content sections
     expect($('#section-currently').length).toBe(1);
     expect($('#section-capabilities').length).toBe(1);

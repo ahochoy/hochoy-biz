@@ -46,6 +46,11 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         --color-text-muted: #6e6858;
         --color-surface:    #eee9dc;
 
+        /* Desktop workspace tokens */
+        --desktop-bg:       #dcd6c4;
+        --desktop-dot:      rgba(23, 21, 15, 0.22);
+        --window-shadow:    rgba(23, 21, 15, 0.22);
+
         /* Rules: heavy structural rule + hairline row divider */
         --color-rule:      var(--ink);
         --color-rule-hair: #d8d2c2;
@@ -98,6 +103,10 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         --color-text-muted: #8d8778;
         --color-surface:    #1c1a15;
 
+        --desktop-bg:       #0a0907;
+        --desktop-dot:      rgba(244, 241, 232, 0.16);
+        --window-shadow:    rgba(0, 0, 0, 0.65);
+
         --color-rule:      #4a4433;
         --color-rule-hair: #2a2620;
 
@@ -127,12 +136,15 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
       }
 
       body {
-        background-color: var(--color-bg);
+        background-color: var(--desktop-bg);
+        background-image: radial-gradient(var(--desktop-dot) 1px, transparent 1px);
+        background-size: 6px 6px;
         color: var(--color-text);
         font-family: var(--font-body);
         font-size: clamp(0.9375rem, 1vw, 1.0625rem);
         line-height: 1.55;
         min-height: 100vh;
+        overflow-x: hidden;
         transition: background-color 0.25s ease, color 0.25s ease;
       }
 
@@ -141,15 +153,133 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         text-decoration: none;
       }
 
+      /* ─── Desktop Surface & File Icon ──────────────────────── */
+      .desktop-surface {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        padding: 1.5rem;
+        pointer-events: none;
+      }
+
+      .desktop-icon {
+        pointer-events: auto;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.5rem 0.65rem;
+        background: transparent;
+        border: 1px dashed transparent;
+        color: var(--color-text);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.15s ease;
+      }
+
+      .desktop-icon:hover {
+        border-color: var(--color-rule);
+        background: rgba(244, 241, 232, 0.35);
+      }
+
+      .dark .desktop-icon:hover {
+        background: rgba(20, 19, 16, 0.55);
+      }
+
+      .desktop-icon:active {
+        transform: scale(0.96);
+      }
+
+      .desktop-icon:focus-visible,
+      .desktop-icon.is-selected {
+        outline: none;
+        border-color: var(--color-rule);
+      }
+
+      .desktop-icon-graphic {
+        width: 3rem;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(3px 3px 0 var(--window-shadow));
+      }
+
+      .desktop-icon-svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .desktop-icon-label {
+        padding: 0.15rem 0.35rem;
+        background: var(--color-bg);
+        border: 1px solid var(--color-rule);
+        color: var(--color-text);
+        line-height: 1.2;
+        letter-spacing: 0.04em;
+        box-shadow: 2px 2px 0 var(--window-shadow);
+      }
+
+      .desktop-icon.is-selected .desktop-icon-label,
+      .desktop-icon:focus-visible .desktop-icon-label {
+        background: var(--color-accent);
+        color: var(--color-accent-contrast);
+        border-color: var(--color-rule);
+      }
+
       /* ─── Window ─────────────────────────────────────────────
          Every page sits inside one DOS-style window: a 1px frame
          capped by a title bar whose double rules run out to the
-         control boxes. Full-bleed below 1440px, centred above. */
+         control boxes. Centered on page load, draggable & resizable. */
       .window {
+        --win-x: 0px;
+        --win-y: 0px;
+        position: relative;
+        z-index: 10;
+        width: 100%;
         max-width: 1440px;
+        min-width: 360px;
+        min-height: 320px;
         margin-inline: auto;
         border: 1px solid var(--color-rule);
         background: var(--color-bg);
+        box-shadow: 8px 8px 0 var(--window-shadow);
+        transform: translate3d(var(--win-x), var(--win-y), 0);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .window.is-closed {
+        display: none;
+      }
+
+      .window.is-minimized {
+        min-height: 0;
+        height: auto !important;
+      }
+
+      .window.is-minimized .window-bar {
+        border-bottom: none;
+      }
+
+      .window.is-minimized .window-content,
+      .window.is-minimized .window-resize {
+        display: none;
+      }
+
+      .window.is-height-locked .window-content {
+        overflow-y: auto;
+        flex: 1 1 0;
+      }
+
+      .window-content {
+        container-type: inline-size;
+        container-name: window;
+        width: 100%;
       }
 
       .window-bar {
@@ -157,8 +287,9 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         align-items: center;
         gap: 0.75rem;
         height: 2rem;
-        padding: 0 0.75rem;
+        padding: 0 0.5rem;
         border-bottom: 1px solid var(--color-rule);
+        background: var(--color-bg);
         font-family: var(--font-mono);
         font-size: var(--label-size);
         font-weight: 500;
@@ -166,6 +297,13 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         line-height: 1;
         color: var(--color-text);
         user-select: none;
+        cursor: grab;
+        touch-action: none;
+        flex: none;
+      }
+
+      .window-bar:active {
+        cursor: grabbing;
       }
 
       /* Two hairlines 3px apart — the DOS double rule, drawn fine. */
@@ -174,6 +312,7 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         min-width: 1rem;
         height: 5px;
         border-block: 1px solid var(--color-rule);
+        pointer-events: none;
       }
 
       .window-title {
@@ -182,11 +321,115 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 70%;
+        pointer-events: none;
       }
 
       .window-ctl {
         flex: none;
+        background: none;
+        border: 1px solid transparent;
+        padding: 0.15rem 0.25rem;
+        font-family: var(--font-mono);
+        font-size: var(--label-size);
+        font-weight: 500;
+        line-height: 1;
         color: var(--color-text-muted);
+        cursor: pointer;
+        transition: color 0.15s ease,
+                    background-color 0.15s ease,
+                    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .window-ctl:hover {
+        color: var(--color-text);
+        background: var(--color-surface);
+        border-color: var(--color-rule-hair);
+      }
+
+      .window-ctl--close:hover {
+        color: var(--ink);
+        background: var(--yellow);
+        border-color: var(--color-rule);
+      }
+
+      .window-ctl:active {
+        transform: scale(0.92);
+      }
+
+      .window-ctl:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 1px;
+      }
+
+      /* ─── Resize Handles ────────────────────────────────────── */
+      .window-resize {
+        position: absolute;
+        z-index: 20;
+        touch-action: none;
+      }
+
+      .window-resize--e {
+        top: 2rem;
+        right: -5px;
+        bottom: 14px;
+        width: 10px;
+        cursor: ew-resize;
+      }
+
+      .window-resize--w {
+        top: 2rem;
+        left: -5px;
+        bottom: 14px;
+        width: 10px;
+        cursor: ew-resize;
+      }
+
+      .window-resize--s {
+        left: 14px;
+        right: 14px;
+        bottom: -5px;
+        height: 10px;
+        cursor: ns-resize;
+      }
+
+      .window-resize--sw {
+        left: -5px;
+        bottom: -5px;
+        width: 16px;
+        height: 16px;
+        cursor: nesw-resize;
+      }
+
+      .window-resize--se {
+        right: 0;
+        bottom: 0;
+        width: 18px;
+        height: 18px;
+        cursor: nwse-resize;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 2px;
+      }
+
+      .window-resize--se::after {
+        content: "";
+        width: 9px;
+        height: 9px;
+        background:
+          linear-gradient(
+            135deg,
+            transparent 0 40%,
+            var(--color-text-muted) 40% 52%,
+            transparent 52% 68%,
+            var(--color-text-muted) 68% 80%,
+            transparent 80%
+          );
+        opacity: 0.7;
+      }
+
+      .window-resize--se:hover::after {
+        opacity: 1;
       }
 
       @media (min-width: 1440px) {
@@ -224,19 +467,271 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
     </script>
   </head>
   <body>
-    <div class="window">
-      <div class="window-bar" aria-hidden="true">
-        <span class="window-ctl">[■]</span>
-        <span class="window-rule"></span>
+    <!-- True Desktop Background with index.html File Icon -->
+    <div class="desktop-surface" id="desktop-surface">
+      <button
+        type="button"
+        class="desktop-icon"
+        id="desktop-icon-index"
+        aria-label="index.html — double-click to open browser window"
+        title="Double-click to open index.html"
+      >
+        <span class="desktop-icon-graphic" aria-hidden="true">
+          <svg class="desktop-icon-svg" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Document sheet with folded corner -->
+            <path d="M4 2H32L44 14V54H4V2Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+            <path d="M32 2V14H44" fill="var(--color-surface)" stroke="var(--ink)" stroke-width="2"/>
+            <!-- Header stripe -->
+            <rect x="9" y="19" width="30" height="5" fill="var(--blue)"/>
+            <!-- HTML tag glyph </> -->
+            <path d="M16 32L11 36L16 40" stroke="var(--ink)" stroke-width="2" stroke-linecap="square"/>
+            <path d="M32 32L37 36L32 40" stroke="var(--ink)" stroke-width="2" stroke-linecap="square"/>
+            <path d="M26 30L22 42" stroke="var(--blue)" stroke-width="2" stroke-linecap="square"/>
+            <!-- Ruled lines -->
+            <line x1="10" y1="47" x2="38" y2="47" stroke="var(--ink)" stroke-width="1.5"/>
+          </svg>
+        </span>
+        <span class="desktop-icon-label">index.html</span>
+      </button>
+    </div>
+
+    <div class="window" id="browser-window">
+      <div class="window-bar" id="window-titlebar">
+        <button
+          type="button"
+          class="window-ctl window-ctl--close"
+          id="window-close-btn"
+          aria-label="Close window"
+          title="Close window"
+        >[■]</button>
+        <span class="window-rule" aria-hidden="true"></span>
         <span class="window-title">{windowTitle}</span>
-        <span class="window-rule"></span>
-        <span class="window-ctl">[↕]</span>
+        <span class="window-rule" aria-hidden="true"></span>
+        <button
+          type="button"
+          class="window-ctl window-ctl--max"
+          id="window-max-btn"
+          aria-label="Minimize or restore window"
+          title="Minimize / Restore window"
+        >[↕]</button>
       </div>
 
-      <slot />
+      <div class="window-content" id="window-content">
+        <slot />
 
-      <Footer />
+        <Footer />
+      </div>
+
+      <!-- Resize handles -->
+      <div class="window-resize window-resize--e" data-resize="e" aria-hidden="true"></div>
+      <div class="window-resize window-resize--w" data-resize="w" aria-hidden="true"></div>
+      <div class="window-resize window-resize--s" data-resize="s" aria-hidden="true"></div>
+      <div class="window-resize window-resize--sw" data-resize="sw" aria-hidden="true"></div>
+      <div class="window-resize window-resize--se" data-resize="se" aria-hidden="true" title="Drag to resize window"></div>
     </div>
+
+    <!-- Window Manager: Drag, Resize, Close, Maximize & Desktop Icon Launch -->
+    <script is:inline>
+      (function () {
+        const win = document.getElementById('browser-window');
+        const titlebar = document.getElementById('window-titlebar');
+        const closeBtn = document.getElementById('window-close-btn');
+        const maxBtn = document.getElementById('window-max-btn');
+        const desktopIcon = document.getElementById('desktop-icon-index');
+        if (!win || !titlebar) return;
+
+        const MIN_WIDTH = 360;
+        const MIN_HEIGHT = 320;
+
+        let winX = 0;
+        let winY = 0;
+
+        function setTranslate(x, y) {
+          winX = x;
+          winY = y;
+          win.style.setProperty('--win-x', `${Math.round(winX)}px`);
+          win.style.setProperty('--win-y', `${Math.round(winY)}px`);
+        }
+
+        function openWindow() {
+          win.classList.remove('is-closed', 'is-minimized', 'is-height-locked');
+          win.style.width = '';
+          win.style.maxWidth = '';
+          win.style.height = '';
+          setTranslate(0, 0);
+          desktopIcon?.classList.remove('is-selected');
+        }
+
+        function closeWindow() {
+          win.classList.add('is-closed');
+        }
+
+        function toggleMinimize() {
+          win.classList.toggle('is-minimized');
+        }
+
+        closeBtn?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeWindow();
+        });
+
+        maxBtn?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleMinimize();
+        });
+
+        titlebar.addEventListener('dblclick', (e) => {
+          if (e.target.closest('.window-ctl')) return;
+          toggleMinimize();
+        });
+
+        // Desktop file icon: single click selects, double-click opens window
+        if (desktopIcon) {
+          desktopIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            desktopIcon.classList.add('is-selected');
+          });
+
+          desktopIcon.addEventListener('dblclick', (e) => {
+            e.stopPropagation();
+            openWindow();
+          });
+
+          desktopIcon.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openWindow();
+            }
+          });
+
+          // Support double-tap / tap on touch devices when window is closed
+          let lastTap = 0;
+          desktopIcon.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTap < 350 || win.classList.contains('is-closed')) {
+              e.preventDefault();
+              openWindow();
+            }
+            lastTap = now;
+          });
+
+          document.addEventListener('click', () => {
+            desktopIcon.classList.remove('is-selected');
+          });
+        }
+
+        // ─── Dragging the window via titlebar ────────────────────
+        let dragState = null;
+
+        titlebar.addEventListener('pointerdown', (e) => {
+          if (e.button !== 0 || e.target.closest('.window-ctl')) return;
+
+          titlebar.setPointerCapture(e.pointerId);
+          dragState = {
+            pointerId: e.pointerId,
+            startX: e.clientX,
+            startY: e.clientY,
+            initialX: winX,
+            initialY: winY,
+          };
+        });
+
+        titlebar.addEventListener('pointermove', (e) => {
+          if (!dragState || e.pointerId !== dragState.pointerId) return;
+          const dx = e.clientX - dragState.startX;
+          const dy = e.clientY - dragState.startY;
+          const nextY = Math.max(-24, dragState.initialY + dy);
+          setTranslate(dragState.initialX + dx, nextY);
+        });
+
+        const endDrag = (e) => {
+          if (!dragState || e.pointerId !== dragState.pointerId) return;
+          if (titlebar.hasPointerCapture(e.pointerId)) {
+            titlebar.releasePointerCapture(e.pointerId);
+          }
+          dragState = null;
+        };
+
+        titlebar.addEventListener('pointerup', endDrag);
+        titlebar.addEventListener('pointercancel', endDrag);
+
+        // ─── Resizing the window with min/max bounds ─────────────
+        let resizeState = null;
+
+        win.querySelectorAll('[data-resize]').forEach((handle) => {
+          handle.addEventListener('pointerdown', (e) => {
+            if (e.button !== 0) return;
+            e.stopPropagation();
+            e.preventDefault();
+
+            if (win.classList.contains('is-maximized')) {
+              win.classList.remove('is-maximized');
+            }
+
+            const dir = handle.getAttribute('data-resize') || 'se';
+            const rect = win.getBoundingClientRect();
+
+            handle.setPointerCapture(e.pointerId);
+            resizeState = {
+              handle,
+              pointerId: e.pointerId,
+              dir,
+              startX: e.clientX,
+              startY: e.clientY,
+              startWidth: rect.width,
+              startHeight: rect.height,
+              initialX: winX,
+            };
+          });
+
+          handle.addEventListener('pointermove', (e) => {
+            if (!resizeState || e.pointerId !== resizeState.pointerId) return;
+            const dx = e.clientX - resizeState.startX;
+            const dy = e.clientY - resizeState.startY;
+            const maxAllowedWidth = Math.min(window.innerWidth - 16, 1440);
+            const effectiveMaxWidth = Math.max(MIN_WIDTH, maxAllowedWidth);
+
+            // Horizontal resize (East or West)
+            if (resizeState.dir.includes('e')) {
+              // Because .window has margin-inline: auto, changing width shifts center by half;
+              // compensate translateX by half the width delta so the left edge stays anchored.
+              const rawWidth = resizeState.startWidth + dx;
+              const clampedWidth = Math.max(MIN_WIDTH, Math.min(effectiveMaxWidth, rawWidth));
+              const appliedDelta = clampedWidth - resizeState.startWidth;
+              win.style.width = `${Math.round(clampedWidth)}px`;
+              win.style.maxWidth = `${Math.round(clampedWidth)}px`;
+              setTranslate(resizeState.initialX + appliedDelta / 2, winY);
+            } else if (resizeState.dir.includes('w')) {
+              const rawWidth = resizeState.startWidth - dx;
+              const clampedWidth = Math.max(MIN_WIDTH, Math.min(effectiveMaxWidth, rawWidth));
+              const appliedDelta = clampedWidth - resizeState.startWidth;
+              win.style.width = `${Math.round(clampedWidth)}px`;
+              win.style.maxWidth = `${Math.round(clampedWidth)}px`;
+              setTranslate(resizeState.initialX - appliedDelta / 2, winY);
+            }
+
+            // Vertical resize (South)
+            if (resizeState.dir.includes('s')) {
+              const rawHeight = resizeState.startHeight + dy;
+              const clampedHeight = Math.max(MIN_HEIGHT, rawHeight);
+              win.classList.add('is-height-locked');
+              win.style.height = `${Math.round(clampedHeight)}px`;
+            }
+          });
+
+          const endResize = (e) => {
+            if (!resizeState || e.pointerId !== resizeState.pointerId) return;
+            if (handle.hasPointerCapture(e.pointerId)) {
+              handle.releasePointerCapture(e.pointerId);
+            }
+            resizeState = null;
+          };
+
+          handle.addEventListener('pointerup', endResize);
+          handle.addEventListener('pointercancel', endResize);
+        });
+      })();
+    </script>
 
     <!-- Dark/light mode persistence -->
     <script is:inline>
