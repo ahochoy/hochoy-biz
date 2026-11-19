@@ -3,7 +3,7 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <span class="footer-name">&amp;REW HoChoy</span>
+  <span class="footer-name">&amp;rew HoChoy<span class="footer-dot">.</span></span>
   <span class="eyebrow footer-meta">&copy; {year} — Bay Area, CA</span>
 </footer>
 
@@ -21,6 +21,10 @@ const year = new Date().getFullYear();
     font-family: var(--font-display);
     font-size: clamp(1rem, 1.5vw, 1.25rem);
     color: var(--color-text);
+  }
+
+  .footer-dot {
+    color: var(--hero-mark);
   }
 
   .footer-meta {
