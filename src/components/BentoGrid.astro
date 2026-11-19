@@ -99,4 +99,25 @@ import capabilities from '../data/capabilities.json';
       padding-right: var(--pad-x);
     }
   }
+
+  @container window (max-width: 900px) {
+    .cap-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .cap-cell:nth-child(4n + 1) { padding-left: var(--cap-pad); }
+    .cap-cell:nth-child(4n)     { padding-right: var(--cap-pad); }
+
+    .cap-cell:nth-child(2n + 1) { padding-left: var(--pad-x); }
+    .cap-cell:nth-child(2n)     { padding-right: var(--pad-x); }
+    .cap-cell:last-child        { padding-right: var(--pad-x); }
+  }
+
+  @container window (max-width: 520px) {
+    .cap-grid { grid-template-columns: 1fr; }
+    .cap-cell--mark { display: none; }
+
+    .cap-cell {
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+  }
 </style>

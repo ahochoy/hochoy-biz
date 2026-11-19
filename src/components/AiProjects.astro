@@ -266,4 +266,17 @@ import projects from '../data/ai-projects.json';
       padding-right: var(--pad-x);
     }
   }
+
+  @container window (max-width: 960px) {
+    .ai-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-card,
+    .ai-card:nth-child(3n + 1),
+    .ai-card:nth-child(3n) {
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+  }
 </style>
