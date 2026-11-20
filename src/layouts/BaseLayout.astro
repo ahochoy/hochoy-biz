@@ -326,9 +326,12 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
 
       .window-ctl {
         flex: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         background: none;
         border: 1px solid transparent;
-        padding: 0.15rem 0.25rem;
+        padding: 0.15rem 0.35rem;
         font-family: var(--font-mono);
         font-size: var(--label-size);
         font-weight: 500;
@@ -344,6 +347,16 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
         color: var(--color-text);
         background: var(--color-surface);
         border-color: var(--color-rule-hair);
+      }
+
+      /* Fixed-width centered box shared by both control glyphs so ■ and ↕
+         sit on an identical optical center between their brackets. */
+      .window-ctl-glyph {
+        display: inline-grid;
+        place-items: center;
+        inline-size: 1em;
+        block-size: 1em;
+        line-height: 1;
       }
 
       .window-ctl--close:hover {
@@ -503,7 +516,7 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
           id="window-close-btn"
           aria-label="Close window"
           title="Close window"
-        >[■]</button>
+        >[<span class="window-ctl-glyph" aria-hidden="true">■</span>]</button>
         <span class="window-rule" aria-hidden="true"></span>
         <span class="window-title">{windowTitle}</span>
         <span class="window-rule" aria-hidden="true"></span>
@@ -513,7 +526,7 @@ const windowTitle = `C:\\HOCHOY\\${pagePath.replace(/\//g, '\\').toUpperCase()}.
           id="window-max-btn"
           aria-label="Minimize or restore window"
           title="Minimize / Restore window"
-        >[↕]</button>
+        >[<span class="window-ctl-glyph" aria-hidden="true">↕</span>]</button>
       </div>
 
       <div class="window-content" id="window-content">
