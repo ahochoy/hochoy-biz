@@ -32,11 +32,44 @@ function formatDate(d: Date): string {
     day: 'numeric',
   });
 }
+
+const siteOrigin = 'https://andrewhochoy.com';
+const postUrl = `${siteOrigin}/devlog/${post.id}`;
+const postJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${postUrl}#article`,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': postUrl,
+  },
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  url: postUrl,
+  keywords: post.data.tags.join(', '),
+  author: {
+    '@type': 'Person',
+    '@id': `${siteOrigin}/#person`,
+    name: 'Andrew HoChoy',
+    url: `${siteOrigin}/`,
+  },
+  publisher: {
+    '@type': 'Person',
+    '@id': `${siteOrigin}/#person`,
+    name: 'Andrew HoChoy',
+    url: `${siteOrigin}/`,
+  },
+};
 ---
 
 <BaseLayout
   title={`${post.data.title} — Devlog | Andrew HoChoy`}
   description={post.data.description}
+  ogType="article"
+  publishedTime={post.data.pubDate.toISOString()}
+  tags={post.data.tags}
+  jsonLd={postJsonLd}
 >
   <DevlogNav
     breadcrumbs={[

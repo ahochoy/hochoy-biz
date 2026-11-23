@@ -14,15 +14,120 @@ import AiProjects from '../components/AiProjects.astro';
 
 import ctaData from '../data/cta.json';
 import connectData from '../data/connect.json';
+import aiProjects from '../data/ai-projects.json';
+import householder from '../data/householder.json';
+import currently from '../data/currently.json';
+import newsletter from '../data/content.json';
 
 // Call to Action is parked for now. Flip to true to bring the section back;
 // its content still lives in src/data/cta.json.
 const showCta = false;
+
+const siteOrigin = 'https://andrewhochoy.com';
+const sameAs = [
+  ...connectData.map((item) => item.href),
+  'https://github.com/ahochoy',
+  newsletter.latestHref,
+  currently.href,
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteOrigin}/#website`,
+      url: `${siteOrigin}/`,
+      name: 'Andrew HoChoy',
+      description: 'Portfolio and build log of Andrew HoChoy — AI Engineer and Forward-Deployed Engineer based in the Bay Area.',
+      publisher: { '@id': `${siteOrigin}/#person` },
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${siteOrigin}/#profilepage`,
+      url: `${siteOrigin}/`,
+      name: 'Andrew HoChoy — AI Engineer & Forward-Deployed Engineer',
+      isPartOf: { '@id': `${siteOrigin}/#website` },
+      mainEntity: { '@id': `${siteOrigin}/#person` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteOrigin}/#person`,
+      name: 'Andrew HoChoy',
+      alternateName: ['&rew HoChoy', 'ahochoy'],
+      url: `${siteOrigin}/`,
+      jobTitle: 'AI Engineer & Forward-Deployed Engineer',
+      description: 'Bay Area AI Engineer and Forward-Deployed Engineer building production agentic systems, permission-aware RAG pipelines, deterministic eval harnesses, and serverless AWS infrastructure.',
+      homeLocation: {
+        '@type': 'Place',
+        name: 'San Francisco Bay Area, CA',
+      },
+      worksFor: {
+        '@type': 'Organization',
+        name: currently.name,
+        url: currently.href,
+      },
+      sameAs,
+      knowsAbout: [
+        'AI Engineering',
+        'Forward-Deployed Engineering',
+        'Retrieval-Augmented Generation (RAG)',
+        'Multi-Agent AI Systems',
+        'LangGraph',
+        'LangChain',
+        'Amazon Bedrock',
+        'AWS Serverless Architecture',
+        'Terraform',
+        'LLM Evaluation & Benchmarking',
+        'Python',
+        'FastAPI',
+        'PostgreSQL & pgvector',
+        'TypeScript',
+        'React',
+      ],
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${siteOrigin}/#projects`,
+      name: 'AI & Software Projects by Andrew HoChoy',
+      itemListElement: [
+        ...aiProjects.map((project, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: {
+            '@type': 'SoftwareApplication',
+            name: project.name,
+            description: project.description,
+            url: project.href,
+            codeRepository: project.githubHref,
+            applicationCategory: 'DeveloperApplication',
+            keywords: project.tags.join(', '),
+            author: { '@id': `${siteOrigin}/#person` },
+          },
+        })),
+        {
+          '@type': 'ListItem',
+          position: aiProjects.length + 1,
+          item: {
+            '@type': 'SoftwareApplication',
+            name: householder.name,
+            description: householder.description,
+            url: householder.href,
+            applicationCategory: 'LifestyleApplication',
+            author: { '@id': `${siteOrigin}/#person` },
+          },
+        },
+      ],
+    },
+  ],
+};
 ---
 
 <BaseLayout
-  title="Andrew HoChoy"
-  description="Consultant, speaker, and entrepreneur based in the Bay Area. Helping businesses leverage AI and technology to grow."
+  title="Andrew HoChoy — AI Engineer & Forward-Deployed Engineer"
+  description="Andrew HoChoy is a Bay Area AI Engineer and Forward-Deployed Engineer building production RAG systems, multi-agent coding tools, eval harnesses, and serverless AWS infrastructure."
+  ogType="profile"
+  jsonLd={jsonLd}
 >
   <Hero />
 
