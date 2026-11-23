@@ -2,7 +2,7 @@
   {
     "id": "phil",
     "name": "Phil Coding",
-    "description": "A bring-your-own-key development agent terminal CLI tool with built-in benchmarking.",
+    "description": "A bring-your-own-key coding agent terminal CLI tool with built-in benchmarking.",
     "tags": [
       "Python",
       "LangGraph",
@@ -11,7 +11,7 @@
       "BYOK",
       "Benchmarking"
     ],
-    "href": "https://phil-development.hochoy.dev",
+    "href": "https://phil-coding.hochoy.dev",
     "githubHref": "https://github.com/ahochoy/phil",
     "ctaLabel": "Launch project",
     "isPrivate": false

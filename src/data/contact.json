@@ -13,5 +13,10 @@
     "label": "Email",
     "href": "mailto:a.hochoy@gmail.com",
     "type": "email"
+  },
+  {
+    "label": "Support My Work",
+    "href": "https://ko-fi.com/ahochoy",
+    "type": "kofi"
   }
 ]

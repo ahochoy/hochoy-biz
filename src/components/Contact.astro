@@ -1,17 +1,22 @@
 ---
 import contactData from '../data/contact.json';
 
-// Rank the buttons: primary (blue), secondary (outline), highlight (neon).
-const tones = ['primary', 'ghost', 'highlight'] as const;
+// Rank the buttons: primary (blue), ghost (outline), highlight (yellow).
+const toneByType: Record<string, 'primary' | 'ghost' | 'highlight'> = {
+  cal: 'primary',
+  instagram: 'ghost',
+  email: 'ghost',
+  kofi: 'highlight',
+};
 ---
 
 <div class="contact-row">
-  {contactData.map((btn, i) => (
+  {contactData.map((btn) => (
     <a
       href={btn.href}
       target="_blank"
       rel="noopener noreferrer"
-      class:list={["contact-btn", `contact-btn--${tones[i % tones.length]}`]}
+      class:list={["contact-btn", `contact-btn--${toneByType[btn.type] ?? 'ghost'}`]}
     >
       {btn.label} <span aria-hidden="true">→</span>
     </a>
