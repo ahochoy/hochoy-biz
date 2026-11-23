@@ -4,6 +4,7 @@ import cloudflare from '@astrojs/cloudflare';
 import partytown from '@astrojs/partytown';
 
 export default defineConfig({
+  site: 'https://andrewhochoy.com',
   adapter: process.env.VITEST ? undefined : cloudflare(),
   integrations: [partytown({
     config: {

@@ -11,7 +11,9 @@ describe('<Hero />', () => {
 
     expect($('h1.hero-name').text()).toContain('Andrew');
     expect($('h1.hero-name').text()).toContain('HoChoy');
-    expect($('.hero-tagline').text()).toContain('Digital Consultant');
+    expect($('.hero-kicker').text()).toContain('Educator · Engineer · Entrepreneur');
+    expect($('.hero-tagline').text()).toContain('AI Engineer');
+    expect($('.hero-tagline').text()).toContain('Forward-Deployed Engineer');
     expect($('a.hero-scroll').attr('href')).toBe('#section-connect');
     expect($('canvas#hero-dither').length).toBe(1);
   });
