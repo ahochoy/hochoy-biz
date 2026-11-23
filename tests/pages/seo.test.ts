@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import { getCollection } from 'astro:content';
 import * as cheerio from 'cheerio';
 import IndexPage from '../../src/pages/index.astro';
 import NotFoundPage from '../../src/pages/404.astro';
@@ -55,7 +56,11 @@ describe('SEO & AEO metadata and discovery endpoints', () => {
     const xml = await response.text();
     expect(xml).toContain('<loc>https://andrewhochoy.com/</loc>');
     expect(xml).toContain('<loc>https://andrewhochoy.com/devlog</loc>');
-    expect(xml).toContain('<loc>https://andrewhochoy.com/devlog/2026-10-05-why-a-devlog</loc>');
+
+    const posts = await getCollection('devlog', ({ data }) => !data.draft);
+    for (const post of posts) {
+      expect(xml).toContain(`<loc>https://andrewhochoy.com/devlog/${post.id}</loc>`);
+    }
   });
 
   it('generates an llms.txt document featuring AI Engineer / FDE persona and shipped projects', async () => {
