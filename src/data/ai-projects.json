@@ -2,13 +2,15 @@
   {
     "id": "phil",
     "name": "Phil Coding",
-    "description": "A bring-your-own-key coding agent terminal CLI tool with built-in benchmarking.",
+    "description": "An open-source, multi-agent terminal coding assistant on PyPI with isolated git worktrees, HITL approvals, and cost budgets.",
     "tags": [
       "Python",
       "LangGraph",
       "LangChain",
-      "CLI",
-      "BYOK",
+      "DeepAgents",
+      "Pydantic",
+      "SQLite",
+      "PyPI",
       "Benchmarking"
     ],
     "href": "https://phil-coding.hochoy.dev",
@@ -19,15 +21,15 @@
   {
     "id": "phoebe-onboarding",
     "name": "Phoebe Onboarding",
-    "description": "An onboarding RAG agentic tool with built-in evaluations, deployed on AWS and Cloudflare.",
+    "description": "A permission-aware RAG onboarding assistant on AWS with cited answers, hallucination checks, and built-in evals.",
     "tags": [
       "RAG",
-      "AWS Lambda",
       "Amazon Bedrock",
-      "CloudFront",
-      "Cloudflare",
+      "pgvector",
+      "FastAPI",
+      "React",
+      "AWS",
       "Terraform",
-      "Docker",
       "Evals"
     ],
     "href": "https://phoebe-onboarding.hochoy.dev",
@@ -39,13 +41,16 @@
   {
     "id": "phineas-finance",
     "name": "Phineas Finance",
-    "description": "A secure financial analysis agentic tool built for enterprise-grade workflows.",
+    "description": "A privacy-first financial analysis app pairing deterministic Python calculations with grounded Amazon Bedrock explanations.",
     "tags": [
       "Python",
       "Amazon Bedrock",
       "AgentCore",
+      "FastAPI",
+      "AWS",
       "Terraform",
-      "Docker"
+      "Docker",
+      "Cloudflare"
     ],
     "href": "https://phineas-finance.hochoy.dev",
     "githubHref": "https://github.com/ahochoy/phineas",
