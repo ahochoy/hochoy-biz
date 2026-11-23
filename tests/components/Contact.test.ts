@@ -20,5 +20,10 @@ describe('<Contact />', () => {
       expect(btn.attr('target')).toBe('_blank');
       expect(btn.attr('rel')).toBe('noopener noreferrer');
     });
+
+    expect(buttons.eq(0).hasClass('contact-btn--primary')).toBe(true);
+    expect(buttons.eq(1).hasClass('contact-btn--ghost')).toBe(true);
+    expect(buttons.eq(2).hasClass('contact-btn--ghost')).toBe(true);
+    expect(buttons.eq(3).hasClass('contact-btn--highlight')).toBe(true);
   });
 });
